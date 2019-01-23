@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:id="@+id/app_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:text="PosChair"
+        android:textColor="@android:color/background_light"
+        android:textSize="65dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/emailInput"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/app_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:hint="Email"
+        android:textColor="@android:color/background_light" />
+
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/emailInput"
+        android:layout_centerHorizontal="true"
+        android:hint="Password"
+        android:textColor="@android:color/background_light" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/passwordInput"
+        android:layout_marginTop="22dp"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/background_light"
+        android:text="LOGIN"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/loginButton"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/background_light"
+        android:text="SIGN UP"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signupButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Remember login"
+        android:textSize="20dp" />
+
+
+
+</RelativeLayout>
