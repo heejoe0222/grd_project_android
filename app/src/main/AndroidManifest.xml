@@ -17,6 +17,7 @@
         </activity>
         <activity android:name=".signupActivity"/>
         <activity android:name=".addinfoActivity"/>
+        <activity android:name=".mainActivity"/>
     </application>
 
 </manifest>
