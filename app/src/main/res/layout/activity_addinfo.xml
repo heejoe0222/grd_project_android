@@ -22,123 +22,118 @@
         android:layout_below="@+id/app_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Sign Up"
+        android:text="추가정보 입력"
         android:textColor="@android:color/background_dark"
-        android:textSize="40dp"
+        android:textSize="30dp"
         android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/nameInput"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
+    <LinearLayout
+        android:id="@+id/layout_h"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/title2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/textbox"
-        android:hint="Name"
-        android:textColorHint="#9e9e9e"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textColor="#9e9e9e"
-        />
+        android:layout_centerHorizontal="false"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/ageInput"
+            android:layout_width="142dp"
+            android:layout_height="45dp"
+            android:background="@drawable/textbox"
+            android:hint="Age"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="#9e9e9e"
+            android:textColorHint="#9e9e9e" />
+
+        <Spinner
+            android:id="@+id/sexInput"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="8dp"
+            android:entries="@array/sex" />
+        <!--android:background="@drawable/textbox"-->
+
+    </LinearLayout>
 
     <EditText
-        android:id="@+id/pwInput"
+        android:id="@+id/heightInput"
         android:layout_width="300dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/nameInput"
+        android:layout_below="@+id/layout_h"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:background="@drawable/textbox"
-        android:hint="Password"
+        android:hint="Height(cm)"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:inputType="textPassword"
+        android:textColorHint="#9e9e9e"
+        android:textColor="#9e9e9e" />
+    <EditText
+        android:id="@+id/weightInput"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/heightInput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/textbox"
+        android:hint="Weight(kg)"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:textColorHint="#9e9e9e"
         android:textColor="#9e9e9e" />
 
-    <EditText
-        android:id="@+id/cfPwInput"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_below="@+id/pwInput"
+    <TextView
+        android:id="@+id/info1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/weightInput"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/textbox"
-        android:hint="Confirm password"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:inputType="textPassword"
-        android:textColorHint="#9e9e9e"
-        android:textColor="#9e9e9e" />
-    <EditText
-        android:id="@+id/serialnumber"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_below="@+id/cfPwInput"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/textbox"
-        android:hint="Serial number of Chair"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textColorHint="#9e9e9e"
-        android:textColor="#9e9e9e" />
-    <EditText
-        android:id="@+id/emailInput"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_below="@+id/serialnumber"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/textbox"
-        android:hint="Email address"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textColorHint="#9e9e9e"
-        android:textColor="#9e9e9e" />
+        android:layout_marginTop="15dp"
+        android:text="추후에 수정 가능합니다 :)"
+        android:textColor="#57cec8"
+        android:textSize="20dp" />
 
     <Button
-        android:id="@+id/signupButton"
+        android:id="@+id/registerButton"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/emailInput"
+        android:layout_below="@+id/info1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/buttonbackground"
-        android:text="SIGN UP"
+        android:text="REGISTER"
         android:textSize="20dp"
         android:textColor="#FFFFFF"
-         />
+        />
 
     <TextView
-        android:id="@+id/question"
+        android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/signupButton"
+        android:layout_below="@+id/registerButton"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="80dp"
         android:layout_marginTop="20dp"
-        android:text="Already have an account?"
-        android:textColor="#9e9e9e"
+        android:text="&lt;안내&gt;"
+        android:textColor="#57cec8"
         android:textSize="20dp" />
 
     <TextView
-        android:id="@+id/login_click"
+        android:id="@+id/text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/signupButton"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
-        android:layout_toRightOf="@+id/question"
-        android:clickable="true"
-        android:text="log in"
-        android:textColor="#57CFC8"
-        android:textSize="20dp" />
+        android:layout_below="@+id/text1"
+        android:layout_centerHorizontal="true"
+        android:text="위의 개인정보는 오직 정확한 분석결과 전달과\n시스템 학습에 사용되며 그 외의 용도로는\n사용되지 않습니다."
+        android:textColor="#9e9e9e"
+        android:textSize="18dp" />
 
 
 </RelativeLayout>

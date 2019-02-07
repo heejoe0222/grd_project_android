@@ -20,11 +20,16 @@
         android:id="@+id/emailInput"
         android:layout_width="280dp"
         android:layout_height="50dp"
+        android:background="@drawable/login_textbox"
         android:layout_below="@+id/app_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:hint="Email"
-        android:textColor="@android:color/background_light" />
+        android:textColorHint="#9e9e9e"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="#9e9e9e" />
 
     <EditText
         android:id="@+id/passwordInput"
@@ -32,15 +37,22 @@
         android:layout_height="50dp"
         android:layout_below="@+id/emailInput"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/login_textbox"
         android:hint="Password"
-        android:textColor="@android:color/background_light" />
+        android:textColorHint="#9e9e9e"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:inputType="textPassword"
+        android:textColor="#9e9e9e" />
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="280dp"
         android:layout_height="40dp"
         android:layout_below="@+id/passwordInput"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:background="@android:color/background_light"
         android:text="LOGIN"
