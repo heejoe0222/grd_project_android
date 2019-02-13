@@ -46,12 +46,20 @@ public class loginActivity extends AppCompatActivity {
                 if (!check) {
                     return;
                 }
-                // * 서버 통해 로그인 하는 코드 들어가야 됨 *
+                OnLogin();
                 */
                 showAddinfoActivity(); //addInfoActivity로 이동
             }
         });
     }
+    public void OnLogin(){
+        String type="login";
+        String email = emailInput.getText().toString();
+        String pw = pwInput.getText().toString();
+        LoginConnection loginConnection = new LoginConnection(this);
+        loginConnection.execute(type,email,pw);
+    }
+
     public void showAddinfoActivity(){
         Intent intent = new Intent(getApplicationContext(),addinfoActivity.class);
         startActivity(intent);

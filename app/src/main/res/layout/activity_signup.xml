@@ -96,7 +96,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:background="@drawable/textbox"
-        android:hint="Email address"
+        android:hint="Email address (used for log in)"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"

@@ -25,6 +25,7 @@ public class signupActivity extends AppCompatActivity {
     private EditText emailInput;
 
     private Activity activity;
+    AlertDialog failAlert; //회원가입 실패 시 뜰 알림창
 
 
     @Override
@@ -54,7 +55,10 @@ public class signupActivity extends AppCompatActivity {
                 }
 
                 // 다이얼로그 바디
-                AlertDialog.Builder alertdialog = new AlertDialog.Builder(activity);
+                final AlertDialog.Builder alertdialog = new AlertDialog.Builder(activity);
+
+                // 메인 다이얼로그 생성
+                final AlertDialog alert = alertdialog.create();
                 // 다이얼로그 메세지
                 alertdialog.setMessage("Name: "+nameInput.getText().toString()+
                         "\nE-mail: "+emailInput.getText().toString());
@@ -64,16 +68,19 @@ public class signupActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        // * 입력된 정보 서버에 전송하는 코드 들어가야 됨 *
+                        // SignUp(); //실패 시 알림 창 띄움
                         // 이메일 중복확인 내용은 나중에 추가
-
-                        new AlertDialog.Builder(signupActivity.this)
-                                .setMessage("회원가입이 완료되었습니다!")
-                                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dlg, int sumthin) {
-                                        finish(); //로그인 액티비티로 돌아가기
-                                    }
-                                }).show(); // 팝업창 보여줌
+                        if(!failAlert.isShowing()) {
+                            new AlertDialog.Builder(signupActivity.this)
+                                    .setMessage("회원가입이 완료되었습니다!")
+                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dlg, int sumthin) {
+                                            finish(); //로그인 액티비티로 돌아가기
+                                        }
+                                    }).show(); // 팝업창 보여줌
+                        }else{
+                            alert.dismiss();
+                        }
 
                     }
                 });
@@ -85,8 +92,7 @@ public class signupActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 });
-                // 메인 다이얼로그 생성
-                AlertDialog alert = alertdialog.create();
+
                 // 타이틀
                 alert.setTitle("입력하신 내용이 맞습니까?");
                 // 다이얼로그 보기
@@ -145,6 +151,18 @@ public class signupActivity extends AppCompatActivity {
         }); //로그인 액티비티로 돌아가기
     }
 
+    public void SignUp(){
+        String type="signUp";
+        String name = nameInput.getText().toString();
+        String pw = pwInput.getText().toString();
+        String serialNum = serialnumber.getText().toString();
+        String email = emailInput.getText().toString();
+
+        SignUpConnection signUpConnection = new SignUpConnection(this,failAlert);
+        signUpConnection.execute(type,name,pw,serialNum,email);
+
+    }
+
     //inputCheck 함수 : 입력되어야 하는 내용이 다 입력됐는지 검사
     public boolean inputCheck(){
         if(nameInput.getText().toString().length()==0){
@@ -174,7 +192,7 @@ public class signupActivity extends AppCompatActivity {
             emailInput.requestFocus();
             return false;
         }
-        if(pwInput.getText().toString()!=cfPwInput.getText().toString()){
+        if(!cfPwInput.getText().toString().equals(pwInput.getText().toString())){
             Toast.makeText(signupActivity.this,"비밀번호가 일치하지 않습니다!", Toast.LENGTH_LONG).show();
             cfPwInput.requestFocus();
             return false;
