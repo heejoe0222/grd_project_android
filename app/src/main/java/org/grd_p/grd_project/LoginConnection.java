@@ -29,7 +29,7 @@ public class LoginConnection extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String login_url="http://..../login.php";
+        String login_url="http://http://ec2-13-125-62-98.ap-northeast-2.compute.amazonaws.com";
         if(type.equals("login")){
             try{
                 String email=params[1];
@@ -82,7 +82,7 @@ public class LoginConnection extends AsyncTask<String, Void, String> {
         loading.dismiss();
         if(!s.equals("success")){ //success가 아닌 실패 오류 원인 문자열 넘어오면
             alertDialog = new AlertDialog.Builder(context).create();
-            alertDialog.setTitle("로그인 실패");
+            alertDialog.setTitle("Fail to log in");
             alertDialog.setMessage(s);
             alertDialog.show(); //실패 알림창 띄움
         }

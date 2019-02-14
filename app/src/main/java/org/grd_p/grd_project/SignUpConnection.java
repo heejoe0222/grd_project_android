@@ -4,6 +4,7 @@ import android.support.v7.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,7 +31,7 @@ public class SignUpConnection extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String signup_url="http://..../signup.php";
+        String signup_url="http://ec2-13-125-62-98.ap-northeast-2.compute.amazonaws.com:80/";
         if(type.equals("signUp")){
             try{
                 String name = params[1];
@@ -44,7 +45,7 @@ public class SignUpConnection extends AsyncTask<String, Void, String> {
                 httpURLConnection.setDoInput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
-                String post_data = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
+                String post_data = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"EUC-KR")+"&"
                         +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(pw,"UTF-8")+"&"
                         +URLEncoder.encode("serialnumber","UTF-8")+"="+URLEncoder.encode(serialNum,"UTF-8")+"&"
                         +URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8");
@@ -53,7 +54,8 @@ public class SignUpConnection extends AsyncTask<String, Void, String> {
                 bufferedWriter.close();
                 outputStream.close();
                 InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1")); //UTF-8?
+                //html 정보 받아옴
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"EUC-KR")); //UTF-8?
                 String result="";
                 String line="";
                 while((line=bufferedReader.readLine())!=null){
@@ -61,14 +63,20 @@ public class SignUpConnection extends AsyncTask<String, Void, String> {
                 }
                 bufferedReader.close();
                 inputStream.close();
+                Log.d("DBGLOG",result);
                 httpURLConnection.disconnect();
+                if(result.startsWith("<table")) //회원정보 전송 성공 시 뜨는 서버 페이지 html 태그
+                    result="success";
                 return result;
 
             }catch (MalformedURLException e){
+                Log.d("DBGLOG","MalformedURLException");
                 e.printStackTrace();
             }catch (IOException e){
+                Log.d("DBGLOG","IOException");
                 e.printStackTrace();
             }catch (Exception e){
+                Log.d("DBGLOG","Exception");
                 e.printStackTrace();
             }
         }
@@ -85,9 +93,8 @@ public class SignUpConnection extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String s) { // s: doInBackground에서 return한 결과 문자열
         super.onPostExecute(s);
         loading.dismiss();
-        if(!s.equals("success")){ //success가 아닌 실패 오류 원인 문자열 넘어오면
-            alertDialog = new AlertDialog.Builder(context).create();
-            alertDialog.setTitle("회원가입 실패");
+        if(s!=null&&!s.equals("success")){ //success가 아닌 실패 오류 원인 문자열 넘어오면
+            alertDialog.setTitle("Fail to sign up");
             alertDialog.setMessage(s);
             alertDialog.show(); //실패 알림창 띄움
         }

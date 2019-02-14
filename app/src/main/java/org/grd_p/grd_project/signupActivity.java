@@ -57,8 +57,6 @@ public class signupActivity extends AppCompatActivity {
                 // 다이얼로그 바디
                 final AlertDialog.Builder alertdialog = new AlertDialog.Builder(activity);
 
-                // 메인 다이얼로그 생성
-                final AlertDialog alert = alertdialog.create();
                 // 다이얼로그 메세지
                 alertdialog.setMessage("Name: "+nameInput.getText().toString()+
                         "\nE-mail: "+emailInput.getText().toString());
@@ -67,8 +65,8 @@ public class signupActivity extends AppCompatActivity {
                 alertdialog.setPositiveButton("OK", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        // SignUp(); //실패 시 알림 창 띄움
+                        failAlert = new AlertDialog.Builder(signupActivity.this).create();
+                        SignUp(); //실패 시 알림 창 띄움
                         // 이메일 중복확인 내용은 나중에 추가
                         if(!failAlert.isShowing()) {
                             new AlertDialog.Builder(signupActivity.this)
@@ -79,7 +77,7 @@ public class signupActivity extends AppCompatActivity {
                                         }
                                     }).show(); // 팝업창 보여줌
                         }else{
-                            alert.dismiss();
+
                         }
 
                     }
@@ -92,7 +90,8 @@ public class signupActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 });
-
+                // 메인 다이얼로그 생성
+                AlertDialog alert = alertdialog.create();
                 // 타이틀
                 alert.setTitle("입력하신 내용이 맞습니까?");
                 // 다이얼로그 보기
