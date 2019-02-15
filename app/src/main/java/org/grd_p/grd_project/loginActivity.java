@@ -1,11 +1,14 @@
 package org.grd_p.grd_project;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,6 +25,8 @@ public class loginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        emailInput = (EditText)findViewById(R.id.emailInput);
 
         pwInput = (EditText)findViewById(R.id.passwordInput);
         //비밀번호 형식으로 뜨도록 설정
@@ -41,27 +46,57 @@ public class loginActivity extends AppCompatActivity {
         loginB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
                 boolean check = inputCheck();
                 if (!check) {
                     return;
                 }
-                OnLogin();
-                */
-                showAddinfoActivity(); //addInfoActivity로 이동
+                String reply = OnLogin();
+                if(reply.equals("success")){
+                    showMainActivity(); //mainActivity()로 이동
+                }else if(reply.equals("wrong_pw")){
+                    new AlertDialog.Builder(loginActivity.this)
+                            .setTitle("Fail to log in")
+                            .setMessage("비밀번호가 올바르지 않습니다!\n다시 입력해주세요.")
+                            .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dlg, int sumthin) {
+                                    pwInput.getText().clear();
+                                    return;
+                                }
+                            }).show(); // 팝업창 보여줌
+                }else if(reply.equals("non_email")){
+                    new AlertDialog.Builder(loginActivity.this)
+                            .setTitle("Fail to log in")
+                            .setMessage("존재하지 않는 이메일입니다!\n새로 가입하시거나 다시 입력해주세요.")
+                            .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dlg, int sumthin) {
+                                    emailInput.getText().clear();
+                                    pwInput.getText().clear();
+                                    return;
+                                }
+                            }).show(); // 팝업창 보여줌
+                }
+
             }
         });
     }
-    public void OnLogin(){
+    public String OnLogin(){
+        String result="fail";
         String type="login";
         String email = emailInput.getText().toString();
         String pw = pwInput.getText().toString();
         LoginConnection loginConnection = new LoginConnection(this);
-        loginConnection.execute(type,email,pw);
+        try {
+            result = loginConnection.execute(type, email, pw).get();
+            return result;
+        }catch (Exception e){
+            Log.d("DBGLOG","Exception in LoginConnection.execute");
+            e.printStackTrace();
+        }
+        return result;
     }
 
-    public void showAddinfoActivity(){
-        Intent intent = new Intent(getApplicationContext(),addinfoActivity.class);
+    public void showMainActivity(){
+        Intent intent = new Intent(getApplicationContext(),mainActivity.class);
         startActivity(intent);
     }
 

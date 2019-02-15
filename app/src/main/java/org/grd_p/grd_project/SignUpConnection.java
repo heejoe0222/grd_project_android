@@ -1,6 +1,5 @@
 package org.grd_p.grd_project;
 
-import android.support.v7.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -21,11 +20,9 @@ import java.net.URLEncoder;
 public class SignUpConnection extends AsyncTask<String, Void, String> {
     Context context;
     ProgressDialog loading;
-    AlertDialog alertDialog;
 
-    public SignUpConnection(Context context, AlertDialog alertDialog) {
+    public SignUpConnection(Context context) {
         this.context=context;
-        this.alertDialog = alertDialog;
     }
 
     @Override
@@ -54,8 +51,7 @@ public class SignUpConnection extends AsyncTask<String, Void, String> {
                 bufferedWriter.close();
                 outputStream.close();
                 InputStream inputStream = httpURLConnection.getInputStream();
-                //html 정보 받아옴
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"EUC-KR")); //UTF-8?
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8")); //UTF-8?
                 String result="";
                 String line="";
                 while((line=bufferedReader.readLine())!=null){
@@ -63,11 +59,8 @@ public class SignUpConnection extends AsyncTask<String, Void, String> {
                 }
                 bufferedReader.close();
                 inputStream.close();
-                Log.d("DBGLOG",result);
                 httpURLConnection.disconnect();
-                if(result.startsWith("<table")) //회원정보 전송 성공 시 뜨는 서버 페이지 html 태그
-                    result="success";
-                return result;
+                return result; //서버에서 처리한 결과 문자열 리턴받음
 
             }catch (MalformedURLException e){
                 Log.d("DBGLOG","MalformedURLException");
@@ -93,11 +86,7 @@ public class SignUpConnection extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String s) { // s: doInBackground에서 return한 결과 문자열
         super.onPostExecute(s);
         loading.dismiss();
-        if(s!=null&&!s.equals("success")){ //success가 아닌 실패 오류 원인 문자열 넘어오면
-            alertDialog.setTitle("Fail to sign up");
-            alertDialog.setMessage(s);
-            alertDialog.show(); //실패 알림창 띄움
-        }
+
     }
 
     @Override

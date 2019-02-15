@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,8 +26,6 @@ public class signupActivity extends AppCompatActivity {
     private EditText emailInput;
 
     private Activity activity;
-    AlertDialog failAlert; //회원가입 실패 시 뜰 알림창
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,19 +64,46 @@ public class signupActivity extends AppCompatActivity {
                 alertdialog.setPositiveButton("OK", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        failAlert = new AlertDialog.Builder(signupActivity.this).create();
-                        SignUp(); //실패 시 알림 창 띄움
+                        String reply = SignUp();
                         // 이메일 중복확인 내용은 나중에 추가
-                        if(!failAlert.isShowing()) {
+                        if(reply.equals("success")) {
                             new AlertDialog.Builder(signupActivity.this)
+                                    .setTitle("Success to sign up")
                                     .setMessage("회원가입이 완료되었습니다!")
                                     .setNeutralButton("OK", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dlg, int sumthin) {
-                                            finish(); //로그인 액티비티로 돌아가기
+                                            showAddinfoActivity(); //추가정보 입력 액티비티로 이동
+                                        }
+                                    }).show(); // 팝업창 보여줌
+                        }else if(reply.equals("non_serialNum")){
+                            new AlertDialog.Builder(signupActivity.this)
+                                    .setTitle("Fail to sign up")
+                                    .setMessage("존재하지 않는 시리얼번호입니다!\n다시 입력해주세요.")
+                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dlg, int sumthin) {
+                                            serialnumber.getText().clear();
+                                            return;
+                                        }
+                                    }).show(); // 팝업창 보여줌
+                        }else if(reply.equals("already_existed")){
+                            new AlertDialog.Builder(signupActivity.this)
+                                    .setTitle("Fail to sign up")
+                                    .setMessage("이미 존재하는 이메일입니다!\n다시 입력해주세요.")
+                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dlg, int sumthin) {
+                                            emailInput.getText().clear();
+                                            return;
                                         }
                                     }).show(); // 팝업창 보여줌
                         }else{
-
+                            new AlertDialog.Builder(signupActivity.this)
+                                    .setTitle("Fail to sign up")
+                                    .setMessage(reply)
+                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dlg, int sumthin) {
+                                            return;
+                                        }
+                                    }).show(); // 팝업창 보여줌
                         }
 
                     }
@@ -150,16 +176,27 @@ public class signupActivity extends AppCompatActivity {
         }); //로그인 액티비티로 돌아가기
     }
 
-    public void SignUp(){
+    public String SignUp(){
+        String result="fail";
         String type="signUp";
         String name = nameInput.getText().toString();
         String pw = pwInput.getText().toString();
         String serialNum = serialnumber.getText().toString();
         String email = emailInput.getText().toString();
 
-        SignUpConnection signUpConnection = new SignUpConnection(this,failAlert);
-        signUpConnection.execute(type,name,pw,serialNum,email);
-
+        SignUpConnection signUpConnection = new SignUpConnection(this);
+        try {
+            result = signUpConnection.execute(type, name, pw, serialNum, email).get();
+            return result;
+        }catch(Exception e){
+            Log.d("DBGLOG","Exception in signUpConnection.execute");
+            e.printStackTrace();
+        }
+        return result;
+    }
+    public void showAddinfoActivity(){
+        Intent intent = new Intent(getApplicationContext(),addinfoActivity.class);
+        startActivity(intent);
     }
 
     //inputCheck 함수 : 입력되어야 하는 내용이 다 입력됐는지 검사

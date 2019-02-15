@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,14 +39,35 @@ public class addinfoActivity extends AppCompatActivity {
                 if (!check) {
                     return;
                 }
-                // * 서버에 정보 올리는 코드 들어가야 함 *
-                showMainActivity(); //mainActivity로 이동
+                String reply = OnUpdateInfo();
+                if(reply.equals("success")){
+                    showMainActivity(); //mainActivity()로 이동
+                }
             }
         });
     }
     public void showMainActivity(){
         Intent intent = new Intent(getApplicationContext(),mainActivity.class);
         startActivity(intent);
+    }
+    public String OnUpdateInfo(){
+        String result="fail";
+        String type="updateInfo";
+        String age = ageInput.getText().toString();
+        String height = heightInput.getText().toString();
+        String weight = weightInput.getText().toString();
+        String sex="female";
+        if (male.isChecked())
+            sex="male";
+        UpdateConnection updateConnection = new UpdateConnection(this);
+        try {
+            result = updateConnection.execute(type, age, sex, height, weight).get();
+            return result;
+        }catch (Exception e){
+            Log.d("DBGLOG","Exception in UpdateConnection.execute");
+            e.printStackTrace();
+        }
+        return result;
     }
 
     //inputCheck 함수 : 입력되어야 하는 내용이 다 입력됐는지 검사

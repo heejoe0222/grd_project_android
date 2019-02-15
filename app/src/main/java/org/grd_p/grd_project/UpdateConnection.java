@@ -1,6 +1,5 @@
 package org.grd_p.grd_project;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -18,31 +17,36 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class LoginConnection extends AsyncTask<String, Void, String> {
+public class UpdateConnection extends AsyncTask<String, Void, String> {
     Context context;
     ProgressDialog loading;
 
-    public LoginConnection(Context context) {
+    public UpdateConnection(Context context) {
         this.context=context;
     }
 
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String login_url="http://ec2-13-125-62-98.ap-northeast-2.compute.amazonaws.com";
-        if(type.equals("login")){
+        String update_url="http://ec2-13-125-62-98.ap-northeast-2.compute.amazonaws.com";
+        if(type.equals("updateInfo")){
             try{
-                String email=params[1];
-                String pw = params[2];
-                URL url = new URL(login_url);
+                //result = UpdateConnection.execute(type, age, sex, height, weight).get();
+                String age=params[1];
+                String sex = params[2];
+                String height=params[3];
+                String weight = params[4];
+                URL url = new URL(update_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
-                String post_data = URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8")+"&"
-                        +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(pw,"UTF-8");
+                String post_data = URLEncoder.encode("age","UTF-8")+"="+URLEncoder.encode(age,"UTF-8")+"&"
+                        +URLEncoder.encode("sex","UTF-8")+"="+URLEncoder.encode(sex,"UTF-8")+"&"
+                        +URLEncoder.encode("height","UTF-8")+"="+URLEncoder.encode(height,"UTF-8")+"&"
+                        +URLEncoder.encode("weight","UTF-8")+"="+URLEncoder.encode(weight,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -76,13 +80,14 @@ public class LoginConnection extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        loading = ProgressDialog.show(context,"Waiting for log in..",null,true,true);
+        loading = ProgressDialog.show(context,"Waiting for updating..",null,true,true);
     }
 
     @Override
     protected void onPostExecute(String s) { // s: doInBackground에서 return한 결과 문자열
         super.onPostExecute(s);
         loading.dismiss();
+
     }
 
     @Override
