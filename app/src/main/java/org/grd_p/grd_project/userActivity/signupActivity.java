@@ -1,4 +1,4 @@
-package org.grd_p.grd_project;
+package org.grd_p.grd_project.userActivity;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -16,6 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.grd_p.grd_project.R;
+import org.grd_p.grd_project.userConnection.SignUpConnection;
 
 
 public class signupActivity extends AppCompatActivity {
@@ -65,6 +68,7 @@ public class signupActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String reply = SignUp();
+                        Log.d("DBGLOG","reply: "+reply);
                         // 이메일 중복확인 내용은 나중에 추가
                         if(reply.equals("success")) {
                             new AlertDialog.Builder(signupActivity.this)

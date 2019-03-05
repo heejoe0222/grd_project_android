@@ -1,3 +1,55 @@
 <resources>
     <string name="app_name">PosChair</string>
+    <string-array name="video_id_array">
+        <item>CqhpNxI8qYw</item>
+        <item>sasCrpgHDy8</item>
+        <item>iJeh3x09Ya8</item>
+        <item>B5zRaD7B504</item>
+        <item>9qWHzj8k-Uo</item>
+        <item>RjiK45wC924</item>
+        <item>RH3zaLO8H4E</item>
+        <item>o14pyzosjvk</item>
+        <item>5SQrpBQne7A</item>
+        <item>5WJ3r67ORxo</item>
+    </string-array>
+
+    <string-array name="video_title_array">
+        <item>Android Security Lock Demo</item>
+        <item>Android Sectioned RecyclerView Demo</item>
+        <item>Android Home Screen Widgets Demo</item>
+        <item>Android Floating Widget like Facebook Messenger Chat Head Demo</item>
+        <item>Android Google Maps Introduction Demo</item>
+        <item>Android Lollipop Activity Transitions Demo</item>
+        <item>Android Toolbar Animation Using Design Support Library Demo</item>
+        <item>Android Material Advance Tabs Demo</item>
+        <item>Android Drag and Drop Demo</item>
+        <item>Android Fingerprint Authentication Demo</item>
+    </string-array>
+
+    <string-array name="video_viewNum_array">
+        <item>조회수 5600</item>
+        <item>조회수 456</item>
+        <item>조회수 23333</item>
+        <item>조회수 20000</item>
+        <item>조회수 5</item>
+        <item>조회수 1</item>
+        <item>조회수 478</item>
+        <item>조회수 33335</item>
+        <item>조회수 122</item>
+        <item>조회수 22</item>
+    </string-array>
+
+    <string-array name="video_postedTime_array">
+        <item>2019.01.11</item>
+        <item>2018.02.22</item>
+        <item>2015.03.14</item>
+        <item>2018.03.12</item>
+        <item>2019.09.19</item>
+        <item>2018.01.01</item>
+        <item>2018.12.12</item>
+        <item>2019.11.11</item>
+        <item>2019.10.03</item>
+        <item>2018.04.05</item>
+    </string-array>
+
 </resources>

@@ -1,16 +1,17 @@
-package org.grd_p.grd_project;
-
+package org.grd_p.grd_project.userActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import org.grd_p.grd_project.R;
+import org.grd_p.grd_project.mainActivity;
+import org.grd_p.grd_project.userConnection.UpdateConnection;
 
 //첫 로그인 시만 실행되는 액티비티
 public class addinfoActivity extends AppCompatActivity {
@@ -39,6 +40,7 @@ public class addinfoActivity extends AppCompatActivity {
                 if (!check) {
                     return;
                 }
+
                 String reply = OnUpdateInfo();
                 if(reply.equals("success")){
                     showMainActivity(); //mainActivity()로 이동
@@ -47,7 +49,7 @@ public class addinfoActivity extends AppCompatActivity {
         });
     }
     public void showMainActivity(){
-        Intent intent = new Intent(getApplicationContext(),mainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), mainActivity.class);
         startActivity(intent);
     }
     public String OnUpdateInfo(){

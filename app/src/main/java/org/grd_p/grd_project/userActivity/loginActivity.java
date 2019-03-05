@@ -1,20 +1,21 @@
-package org.grd_p.grd_project;
+package org.grd_p.grd_project.userActivity;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.grd_p.grd_project.R;
+import org.grd_p.grd_project.mainActivity;
+import org.grd_p.grd_project.userConnection.LoginConnection;
 
 public class loginActivity extends AppCompatActivity {
     EditText emailInput;
@@ -75,7 +76,6 @@ public class loginActivity extends AppCompatActivity {
                                 }
                             }).show(); // 팝업창 보여줌
                 }
-
             }
         });
     }
@@ -96,7 +96,7 @@ public class loginActivity extends AppCompatActivity {
     }
 
     public void showMainActivity(){
-        Intent intent = new Intent(getApplicationContext(),mainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), mainActivity.class);
         startActivity(intent);
     }
 

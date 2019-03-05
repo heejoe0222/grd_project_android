@@ -1,4 +1,4 @@
-package org.grd_p.grd_project;
+package org.grd_p.grd_project.userConnection;
 
 import android.app.ProgressDialog;
 import android.content.Context;
