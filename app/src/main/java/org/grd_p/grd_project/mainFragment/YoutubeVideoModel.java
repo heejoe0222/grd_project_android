@@ -2,6 +2,7 @@ package org.grd_p.grd_project.mainFragment;
 
 public class YoutubeVideoModel {
     private String videoID, Title, viewNum, PostedTime;
+    private int liked;
 
     public String getVideoID() {
         return videoID;
@@ -33,6 +34,14 @@ public class YoutubeVideoModel {
 
     public void setPostedTime(String postedTime) {
         PostedTime = postedTime;
+    }
+
+    public int isLiked() {
+        return liked;
+    } //0이면 false, 1이면 true
+
+    public void setLiked(int liked) {
+        this.liked = liked;
     }
 
     @Override

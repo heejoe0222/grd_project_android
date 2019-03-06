@@ -21,7 +21,7 @@ public class loginActivity extends AppCompatActivity {
     EditText emailInput;
     EditText pwInput;
     Button signupB;
-    CheckBox remember_login; //나중에 코드 추가
+    CheckBox remember_login; //나중에 코드 추가 //sharedPreference 이용해서 자동로그인 구현
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +51,8 @@ public class loginActivity extends AppCompatActivity {
                 if (!check) {
                     return;
                 }
+                showMainActivity(); //mainActivity()로 이동
+                /* 메인레이아웃 테스트 후에 다시 살려야!
                 String reply = OnLogin();
                 if(reply.equals("success")){
                     showMainActivity(); //mainActivity()로 이동
@@ -76,6 +78,8 @@ public class loginActivity extends AppCompatActivity {
                                 }
                             }).show(); // 팝업창 보여줌
                 }
+                */
+
             }
         });
     }

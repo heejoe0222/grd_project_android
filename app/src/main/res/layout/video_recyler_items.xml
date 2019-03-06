@@ -13,7 +13,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="150dp">
 
         <!-- youtube thumbnail view to show the thumbnail of videos -->
         <com.google.android.youtube.player.YouTubeThumbnailView
@@ -34,7 +34,7 @@
             android:layout_toRightOf="@+id/video_thumbnail"
             android:text="Title of Video "
             android:textColor="@android:color/black"
-            android:textSize="21sp" />
+            android:textSize="18sp" />
 
 
         <TextView
@@ -65,6 +65,14 @@
             android:text="2019.1.17."
             android:textColor="@color/font_color"
             android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/video_likeButton"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/video_like" />
     </RelativeLayout>
 
 
