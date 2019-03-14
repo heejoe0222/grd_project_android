@@ -51,8 +51,6 @@ public class loginActivity extends AppCompatActivity {
                 if (!check) {
                     return;
                 }
-                showMainActivity(); //mainActivity()로 이동
-                /* 메인레이아웃 테스트 후에 다시 살려야!
                 String reply = OnLogin();
                 if(reply.equals("success")){
                     showMainActivity(); //mainActivity()로 이동
@@ -78,7 +76,7 @@ public class loginActivity extends AppCompatActivity {
                                 }
                             }).show(); // 팝업창 보여줌
                 }
-                */
+
 
             }
         });

@@ -20,7 +20,7 @@
         <activity android:name=".userActivity.signupActivity"/>
         <activity android:name=".userActivity.addinfoActivity"/>
         <activity android:name=".mainActivity"/>
-        <activity android:name=".youtubePlayerActivity"/>
+        <activity android:name=".mainFragment.youtubePlayerActivity"/>
     </application>
 
 </manifest>

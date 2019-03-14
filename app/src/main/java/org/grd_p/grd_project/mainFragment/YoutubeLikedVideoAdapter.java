@@ -21,12 +21,10 @@ import org.grd_p.grd_project.R;
 
 import java.util.ArrayList;
 
-
-public class YoutubeVideoAdapter extends RecyclerView.Adapter<YoutubeVideoAdapter.YoutubeViewHolder> {
-    private static final String TAG = "DBGLOG "+YoutubeVideoAdapter.class.getSimpleName();
+public class YoutubeLikedVideoAdapter extends RecyclerView.Adapter<YoutubeLikedVideoAdapter.YoutubeViewHolder>{
     private Context context;
-    private OnClickListener onClickListener;
-    private final ArrayList<YoutubeVideoModel> youtubeVideoModelArrayList;
+    private likedOnClickListener onClickListener;
+    private ArrayList<YoutubeVideoModel> youtubeVideoModelArrayList;
 
     public class YoutubeViewHolder extends RecyclerView.ViewHolder{
         public YouTubeThumbnailView videoThumbnail;
@@ -48,24 +46,20 @@ public class YoutubeVideoAdapter extends RecyclerView.Adapter<YoutubeVideoAdapte
         }
     }
 
-    public YoutubeVideoAdapter(Context context, ArrayList<YoutubeVideoModel> youtubeVideoModelArrayList) {
-        this.context = context;
-        this.youtubeVideoModelArrayList = youtubeVideoModelArrayList;
-    }
-    public void setOnClickListener(OnClickListener onClickListener){
+    public void setOnClickListener(likedOnClickListener onClickListener){
         this.onClickListener = onClickListener;
     }
 
-
-    @NonNull
-    @Override
+    public YoutubeLikedVideoAdapter(Context context, ArrayList<YoutubeVideoModel> youtubeVideoModelArrayList) {
+        this.context = context;
+        this.youtubeVideoModelArrayList = youtubeVideoModelArrayList;
+    }
     //보여질 카드 레이아웃 xml 가져오는 역할
     public YoutubeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view  = layoutInflater.inflate(R.layout.video_recyler_items,parent,false);
         return new YoutubeViewHolder(view);
     }
-
     @Override
     //display the data at the specified position (카드 레이아웃 내 데이터 값 설정)
     public void onBindViewHolder(@NonNull final YoutubeViewHolder holder, final int i) {
@@ -82,10 +76,7 @@ public class YoutubeVideoAdapter extends RecyclerView.Adapter<YoutubeVideoAdapte
         });
         holder.viewNum.setText(youtubeVideoModel.getViewNum());
         holder.videoPostedTime.setText(youtubeVideoModel.getPostedTime());
-        if(youtubeVideoModel.isLiked()==0) //아직 좋아요 하지 않은 경우
-            holder.likeButton.setPressed(false);
-        else //이미 좋아요 한 경우
-            holder.likeButton.setPressed(true);
+        holder.likeButton.setPressed(true); //좋아요 버튼 눌린 상태
         holder.likeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -109,7 +100,6 @@ public class YoutubeVideoAdapter extends RecyclerView.Adapter<YoutubeVideoAdapte
                     @Override
                     //썸네일 로드 실패하는 경우
                     public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
-                        Log.e(TAG,"Youtube Thumbnail Error");
                     }
                 });
             }
@@ -117,7 +107,6 @@ public class YoutubeVideoAdapter extends RecyclerView.Adapter<YoutubeVideoAdapte
             @Override
             //초기화 실패하는 경우
             public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
-                Log.e(TAG,"Youtube Initialization Failure");
             }
         });
         //비디오 썸네일(이미지)에 대한 click event
@@ -129,37 +118,33 @@ public class YoutubeVideoAdapter extends RecyclerView.Adapter<YoutubeVideoAdapte
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return youtubeVideoModelArrayList !=null ? youtubeVideoModelArrayList.size():0;
     }
 
-    public interface OnClickListener {
+    public interface likedOnClickListener {
         void onLikeButtonListener(View v, int position);
     }
 
-    public int findIndex(String videoID){
+    public void addVideo(YoutubeVideoModel video) {
+        Log.d("DBGLOG","likedAdapter_addVideo: "+video.getVideoID()+", "+video.getTitle());
+        youtubeVideoModelArrayList.add(0,video);
+    }
+
+    public void removeVideo(String videoID){
+        Log.d("DBGLOG","likedAdapter_removeVideo: "+videoID);
         YoutubeVideoModel youtubeVideoModel;
         for(int i=0;i<youtubeVideoModelArrayList.size();i++){
             youtubeVideoModel = youtubeVideoModelArrayList.get(i);
             if (youtubeVideoModel.getVideoID().equals(videoID)){
-                return i;
+                youtubeVideoModelArrayList.remove(i);
+                break;
             }
         }
-        return 0;
     }
 
-    public void setUnliked(int index){
-        youtubeVideoModelArrayList.get(index).setLiked(0);
-    }
+
+
 
 }
-
-
-
-
-
-
-
-

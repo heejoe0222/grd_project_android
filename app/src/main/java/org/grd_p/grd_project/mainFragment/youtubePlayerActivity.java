@@ -1,4 +1,4 @@
-package org.grd_p.grd_project;
+package org.grd_p.grd_project.mainFragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +7,9 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+
+import org.grd_p.grd_project.Authorization;
+import org.grd_p.grd_project.R;
 
 public class youtubePlayerActivity extends YouTubeBaseActivity {
     private static final String TAG = "DBGLOG "+youtubePlayerActivity.class.getSimpleName();

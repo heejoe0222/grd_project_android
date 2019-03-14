@@ -28,7 +28,7 @@ public class LoginConnection extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String login_url="http://ec2-13-125-62-98.ap-northeast-2.compute.amazonaws.com";
+        String login_url="http://101.101.163.32/login";
         if(type.equals("login")){
             try{
                 String email=params[1];
