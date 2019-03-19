@@ -1,4 +1,4 @@
-package org.grd_p.grd_project.mainFragment;
+package org.grd_p.grd_project.mainFragment.fragment_video;
 
 import android.os.Bundle;
 import android.util.Log;
