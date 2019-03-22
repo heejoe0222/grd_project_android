@@ -17,8 +17,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.grd_p.grd_project.R;
-import org.grd_p.grd_project.userConnection.SignUpConnection;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class signupActivity extends AppCompatActivity {
@@ -28,6 +37,9 @@ public class signupActivity extends AppCompatActivity {
     private EditText serialnumber;
     private EditText emailInput;
 
+    RequestQueue requestQueue;
+    String reply="fail";
+
     private Activity activity;
 
     @Override
@@ -35,18 +47,19 @@ public class signupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         activity = this;
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        nameInput = (EditText)findViewById(R.id.nameInput);
-        pwInput = (EditText)findViewById(R.id.pwInput);
+        nameInput = findViewById(R.id.nameInput);
+        pwInput = findViewById(R.id.pwInput);
         //비밀번호 입력 창 -> 비밀번호 형식으로 문자 뜨도록
         pwInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        cfPwInput = (EditText)findViewById(R.id.cfPwInput);
+        cfPwInput = findViewById(R.id.cfPwInput);
         //비밀번호 확인 창 -> 비밀번호 형식으로 문자 뜨도록
         cfPwInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        serialnumber = (EditText)findViewById(R.id.serialnumber);
-        emailInput = (EditText)findViewById(R.id.emailInput);
+        serialnumber = findViewById(R.id.serialnumber);
+        emailInput = findViewById(R.id.emailInput);
 
-        Button signupButton = (Button)findViewById(R.id.signupButton);
+        Button signupButton = findViewById(R.id.signupButton);
         //회원가입 버튼 눌렀을 때
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +68,6 @@ public class signupActivity extends AppCompatActivity {
                 if (!check) {
                     return;
                 }
-
                 // 다이얼로그 바디
                 final AlertDialog.Builder alertdialog = new AlertDialog.Builder(activity);
 
@@ -67,49 +79,7 @@ public class signupActivity extends AppCompatActivity {
                 alertdialog.setPositiveButton("OK", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String reply = SignUp();
-                        Log.d("DBGLOG","reply: "+reply);
-                        // 이메일 중복확인 내용은 나중에 추가
-                        if(reply.equals("success")) {
-                            new AlertDialog.Builder(signupActivity.this)
-                                    .setTitle("Success to sign up")
-                                    .setMessage("회원가입이 완료되었습니다!")
-                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dlg, int sumthin) {
-                                            showAddinfoActivity(); //추가정보 입력 액티비티로 이동
-                                        }
-                                    }).show(); // 팝업창 보여줌
-                        }else if(reply.equals("non_serialNum")){
-                            new AlertDialog.Builder(signupActivity.this)
-                                    .setTitle("Fail to sign up")
-                                    .setMessage("존재하지 않는 시리얼번호입니다!\n다시 입력해주세요.")
-                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dlg, int sumthin) {
-                                            serialnumber.getText().clear();
-                                            return;
-                                        }
-                                    }).show(); // 팝업창 보여줌
-                        }else if(reply.equals("already_existed")){
-                            new AlertDialog.Builder(signupActivity.this)
-                                    .setTitle("Fail to sign up")
-                                    .setMessage("이미 존재하는 이메일입니다!\n다시 입력해주세요.")
-                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dlg, int sumthin) {
-                                            emailInput.getText().clear();
-                                            return;
-                                        }
-                                    }).show(); // 팝업창 보여줌
-                        }else{
-                            new AlertDialog.Builder(signupActivity.this)
-                                    .setTitle("Fail to sign up")
-                                    .setMessage(reply)
-                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dlg, int sumthin) {
-                                            return;
-                                        }
-                                    }).show(); // 팝업창 보여줌
-                        }
-
+                        SignUp();
                     }
                 });
 
@@ -170,7 +140,7 @@ public class signupActivity extends AppCompatActivity {
                 }
             });
 
-        TextView back_to_login = (TextView)findViewById(R.id.login_click);
+        TextView back_to_login = findViewById(R.id.login_click);
         //log in text 눌렀을 때
         back_to_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,27 +150,89 @@ public class signupActivity extends AppCompatActivity {
         }); //로그인 액티비티로 돌아가기
     }
 
-    public String SignUp(){
-        String result="fail";
-        String type="signUp";
-        String name = nameInput.getText().toString();
-        String pw = pwInput.getText().toString();
-        String serialNum = serialnumber.getText().toString();
-        String email = emailInput.getText().toString();
+    public void SignUp(){
+        Log.d("DBGLOG","SignUp");
+        String url = "http://ec2-52-79-250-100.ap-northeast-2.compute.amazonaws.com/signup/";
+        // 이메일 중복확인 내용은 나중에 추가
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>(){
+                    @Override
+                    //응답 성공적으로 받았을 때
+                    public void onResponse(String response) {
+                        Log.d("DBGLOG","onResponse");
+                        reply =  response; //응답 받은 string
+                        Log.d("DBGLOG","reply: "+reply);
 
-        SignUpConnection signUpConnection = new SignUpConnection(this);
-        try {
-            result = signUpConnection.execute(type, name, pw, serialNum, email).get();
-            return result;
-        }catch(Exception e){
-            Log.d("DBGLOG","Exception in signUpConnection.execute");
-            e.printStackTrace();
-        }
-        return result;
+                        if(reply.equals("success")) {
+                            new AlertDialog.Builder(signupActivity.this)
+                                    .setTitle("Success to sign up")
+                                    .setMessage("회원가입이 완료되었습니다!")
+                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dlg, int sumthin) {
+                                            showAddinfoActivity(); //추가정보 입력 액티비티로 이동
+                                        }
+                                    }).show(); // 팝업창 보여줌
+                        }else if(reply.equals("non_serialNum")){
+                            new AlertDialog.Builder(signupActivity.this)
+                                    .setTitle("Fail to sign up")
+                                    .setMessage("존재하지 않는 시리얼번호입니다!\n다시 입력해주세요.")
+                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dlg, int sumthin) {
+                                            serialnumber.getText().clear();
+                                            return;
+                                        }
+                                    }).show(); // 팝업창 보여줌
+                        }else if(reply.equals("already_existed")){
+                            new AlertDialog.Builder(signupActivity.this)
+                                    .setTitle("Fail to sign up")
+                                    .setMessage("이미 존재하는 이메일입니다!\n다시 입력해주세요.")
+                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dlg, int sumthin) {
+                                            emailInput.getText().clear();
+                                            return;
+                                        }
+                                    }).show(); // 팝업창 보여줌
+                        }else{
+                            new AlertDialog.Builder(signupActivity.this)
+                                    .setTitle("Fail to sign up")
+                                    .setMessage(reply)
+                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dlg, int sumthin) {
+                                            return;
+                                        }
+                                    }).show(); // 팝업창 보여줌
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("DBGLOG","onErrorResponse "+error);
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> params = new HashMap<>();
+                Log.d("DBGLOG","getParams");
+                params.put("name",nameInput.getText().toString());
+                params.put("password",pwInput.getText().toString());
+                params.put("serialnumber",serialnumber.getText().toString());
+                params.put("email",emailInput.getText().toString());
+                return params;
+            }
+        };
+        request.setShouldCache(false);
+        Log.d("DBGLOG","BeforeRequest");
+        requestQueue.add(request);
+        Log.d("DBGLOG","AfterRequest");
     }
+
     public void showAddinfoActivity(){
-        Intent intent = new Intent(getApplicationContext(),addinfoActivity.class);
-        startActivity(intent);
+        finish();
+        startActivity(new Intent(getApplicationContext(),addinfoActivity.class));
     }
 
     //inputCheck 함수 : 입력되어야 하는 내용이 다 입력됐는지 검사
