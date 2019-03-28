@@ -30,4 +30,5 @@ dependencies {
     implementation 'com.android.support:design:28.+'
     implementation 'com.android.volley:volley:1.+'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation files('libs/MPAndroidChart-v3.0.1.jar')
 }

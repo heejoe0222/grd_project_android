@@ -11,9 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="150dp"
-        android:text="저번 주 분석 결과를 바탕으로 한 키워드"
+        android:text="Keyword based on last week's analysis"
         android:textColor="@color/font_color"
         android:textSize="20dp" />
+    <!--android:text="저번 주 분석 결과를 바탕으로 한 키워드"-->
 
     <!--tag에 대한 recycler 뷰-->
     <android.support.v7.widget.RecyclerView
@@ -45,10 +46,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="25dp"
-                android:text="추천 운동 영상"
+                android:layout_marginTop="20dp"
+                android:text="Recommended exercise video"
                 android:textColor="@color/font_color"
                 android:textSize="20dp" />
+            <!--android:text="추천 운동 영상"-->
 
             <!--추천 운동영상 에 대한 recycler 뷰-->
             <android.support.v7.widget.RecyclerView
@@ -75,11 +77,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:layout_below="@+id/view2"
-                android:text="좋아요한 운동 영상"
+                android:text="Your FAVORITE exercise video"
                 android:textColor="@color/font_color"
                 android:textSize="20dp" />
+            <!--android:text="좋아요한 운동 영상"-->
 
             <!--좋아요한 영상에 대한 recycler 뷰-->
             <android.support.v7.widget.RecyclerView

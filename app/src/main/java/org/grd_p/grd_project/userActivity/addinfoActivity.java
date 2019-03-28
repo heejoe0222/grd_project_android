@@ -64,7 +64,8 @@ public class addinfoActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), mainActivity.class));
     }
     public void OnUpdateInfo(){
-        String url = "http://ec2-52-79-250-100.ap-northeast-2.compute.amazonaws.com/addInfo/";
+        //String url = "http://ec2-52-79-250-100.ap-northeast-2.compute.amazonaws.com/addInfo/";
+        String url = "http://101.101.163.32/addInfo/";
         sex="female";
         if (male.isChecked())
             sex="male";
@@ -79,7 +80,7 @@ public class addinfoActivity extends AppCompatActivity {
                         //Log.d("DBGLOG","onResponse");
                         reply =  response; //응답 받은 string
                         if(reply.equals("success")){
-                            showMainActivity(); //mainActivity()로 이동
+                            showMainActivity(); //mainActivity() 대신 초기 자세 설정으로 바꿔야
                         }
                     }
                 },

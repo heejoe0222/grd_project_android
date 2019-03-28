@@ -63,12 +63,15 @@ public class loginActivity extends AppCompatActivity {
                 if (!check) {
                     return;
                 }
-                OnLogin();
+                //테스트 위해 지움
+                //OnLogin();
+                showMainActivity(); //mainActivity()로 이동
             }
         });
     }
     public void OnLogin(){
-        String url = "http://ec2-52-79-250-100.ap-northeast-2.compute.amazonaws.com/login/";
+        //String url = "http://ec2-52-79-250-100.ap-northeast-2.compute.amazonaws.com/login/";
+        String url = "http://101.101.163.32/login/";
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 url,

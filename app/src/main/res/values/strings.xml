@@ -1,49 +1,33 @@
 <resources>
     <string name="app_name">PosChair</string>
     <string-array name="video_id_array">
-        <item>FfBe4LzN4c8</item>
-        <item>dJXZRZvqbYg</item>
-        <item>U5jPJEHNFQg</item>
-        <item>kDPF8UeRgRo</item>
-        <item>2u97jwzp0Jw</item>
-        <item>EGGe07oYRkU</item>
+        <item>Ub8afedu5GQ</item>
+        <item>2NOsE-VPpkE</item>
+        <item>SedzswEwpPw</item>
     </string-array>
 
     <integer-array name="video_liked_array">
         <item>0</item>
         <item>0</item>
         <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
     </integer-array>
 
     <string-array name="video_title_array">
-        <item>굽은 어깨 펴는 스트레칭 3가지 (누구나 쉽게 따라할 수 있는)</item>
-        <item>예쁜 일자어깨 만드는 승모근 스트레칭 BEST3</item>
-        <item>거북목, 굽은어깨, 굽은등 교정에 좋은 스트레칭 (Posture correction - rounded shoulders workout)</item>
-        <item>단 5초만 해줘도 시원한 초강력 굽은 등 스트레칭 (날개뼈 통증도 싸악) (eng sub)</item>
-        <item>목디스크 거북목에 좋은 1분 스트레칭</item>
-        <item>목 · 어깨 통증 완화를 위한 요가(거북목 · 어깨결림) | 15분 통증 완화 요가 | 요가소년 055</item>
-
+        <item>Neck &amp; Shoulder Pain Relief Exercises  &amp; Yoga Stretches Jen Hilman</item>
+        <item>Neck Pain Stretches &amp; Exercises - Ask Doctor Jo</item>
+        <item>Yoga for Neck and Shoulder Relief - Yoga With Adriene</item>
     </string-array>
 
     <string-array name="video_viewNum_array">
-        <item>조회수 455,862</item>
-        <item>조회수 2,244,327</item>
-        <item>조회수 13,271</item>
-        <item>조회수 357,080</item>
-        <item>조회수 338,450</item>
-        <item>조회수 388,258</item>
+        <item>2,817,813 views</item>
+        <item>1,782,419 views</item>
+        <item>5,075,466 views</item>
     </string-array>
 
     <string-array name="video_postedTime_array">
-        <item>2017. 10. 12.</item>
-        <item>2018. 3. 11.</item>
-        <item>2018. 10. 1.</item>
-        <item>2018. 11. 3.</item>
-        <item>2016. 6. 27.</item>
-        <item>2018. 4. 2.</item>
+        <item>2015. 4. 20.</item>
+        <item>2012. 6. 21.</item>
+        <item>2017. 6. 18.</item>
     </string-array>
 
 </resources>

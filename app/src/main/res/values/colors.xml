@@ -5,6 +5,15 @@
     <color name="colorAccent">#D81B60</color>
     <color name="black_25_transparent">#40000000</color>
     <color name="color_white">#ffffff</color>
-    <color name="font_color">#949494</color>
+    <color name="font_color">#8c8c8c</color>
     <color name="transparent">#00000000</color>
+
+
+    <color name="theme1">#71e0ae</color>
+    <color name="theme2">#57CFC8</color>
+    <color name="theme3">#3dbde1</color>
+    <color name="theme4">#ff5733</color>
+    <color name="theme5">#ffc300</color>
+    <color name="theme6">#05cbae</color>
+    <color name="theme7">#e8e113</color>
 </resources>

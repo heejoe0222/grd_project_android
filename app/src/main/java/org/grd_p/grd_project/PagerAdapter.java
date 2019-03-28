@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.grd_p.grd_project.mainFragment.Fragment_main;
-import org.grd_p.grd_project.mainFragment.Fragment_report;
+import org.grd_p.grd_project.mainFragment.fragment_report.Fragment_report;
 import org.grd_p.grd_project.mainFragment.Fragment_setting;
 import org.grd_p.grd_project.mainFragment.fragment_video.Fragment_video;
 

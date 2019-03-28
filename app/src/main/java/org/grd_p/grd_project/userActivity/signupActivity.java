@@ -152,7 +152,8 @@ public class signupActivity extends AppCompatActivity {
 
     public void SignUp(){
         Log.d("DBGLOG","SignUp");
-        String url = "http://ec2-52-79-250-100.ap-northeast-2.compute.amazonaws.com/signup/";
+        //String url = "http://ec2-52-79-250-100.ap-northeast-2.compute.amazonaws.com/signup/";
+        String url = "http://101.101.163.32/signup/";
         // 이메일 중복확인 내용은 나중에 추가
         StringRequest request = new StringRequest(
                 Request.Method.POST,

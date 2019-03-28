@@ -204,10 +204,11 @@ public class Fragment_video extends Fragment {
     private void generateTagList(){
         tagArray = new ArrayList<>();
 
-        String[] tagStrList = {"목 꺾임","눕는 자세","기대는 자세","굽은 어깨"}; //화면에 띄울 태그 리스트
+        //String[] tagStrList = {"목 꺾임","눕는 자세","기대는 자세","굽은 어깨"}; //화면에 띄울 태그 리스트
+        String[] tagStrList = {"Rounded shoulders","Forward head posture"}; //화면에 띄울 태그 리스트
 
         for(int i=0;i<tagStrList.length;i++){
-            tagStrList[i] = "# ".concat(tagStrList[i]);
+            tagStrList[i] = " # ".concat(tagStrList[i]+" ");
         }
 
         Collections.addAll(tagArray,tagStrList);
