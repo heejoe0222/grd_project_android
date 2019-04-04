@@ -30,4 +30,13 @@
         <item>2017. 6. 18.</item>
     </string-array>
 
+    <string-array name="posture_alarm">
+        <item>You are sitting in the right posture :D</item>
+        <item>Are your legs crossed?\nPlease stay in the right position!</item>
+        <item>Your body is leaning forward :(\nPlease stay in the right position!</item>
+        <item>It\'s a posture that puts pressure on your back :(\n\u0009\u0009\u0009\u0009\u0009\u0009\u0009\u0009\u0009Please stay in the right position!</item>
+        <item>Are your legs on the chair?\nPlease stay in the right position!</item>
+        <item>Your balance is tilted to one side :(\n Please stay in the right position!</item>
+    </string-array>
+
 </resources>

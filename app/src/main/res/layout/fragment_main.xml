@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="You are sitting in the right posture :D"
+        android:text="Waiting for image loading..."
         android:textColor="#0FA059"
         android:textSize="20dp"
         />
@@ -42,7 +42,17 @@
         android:layout_width="280dp"
         android:layout_height="280dp"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/posture_sample2" />
+        app:srcCompat="@drawable/loading" />
+
+    <Button
+        android:id="@+id/refresh"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/imageView"
+        android:layout_toLeftOf="@id/display_time"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="90dp"
+        android:background="@drawable/refresh"/>
 
     <TextView
         android:id="@+id/display_time"
@@ -51,8 +61,8 @@
         android:layout_below="@+id/imageView"
         android:layout_alignParentRight="true"
         android:layout_marginTop="18dp"
-        android:layout_marginRight="70dp"
-        android:text="Image from 1 min ago"
+        android:layout_marginRight="50dp"
+        android:text="not yet load image"
         android:textColor="@color/font_color"
         android:textSize="15dp" />
 

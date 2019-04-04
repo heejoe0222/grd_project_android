@@ -12,11 +12,9 @@ import android.widget.Button;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -92,7 +90,7 @@ public class fragment_report_dayChart extends Fragment {
         yValues.add(new BarEntry(3,spine));
 
         //MyBarDataSet dataset = new MyBarDataSet(yValues, "잘못 앉은 시간 (단위: 분)");
-        MyBarDataSet dataset = new MyBarDataSet(yValues, "Wrong Sitting time (unit: min)");
+        dayBarDataSet dataset = new dayBarDataSet(yValues, "Wrong Sitting time (unit: min)");
         dataset.setValueTextSize(13);
         dataset.setColors(new int[] {R.color.theme1,R.color.theme2,R.color.theme3},getContext());
         ArrayList<BarDataSet> dataSets = new ArrayList<>();
@@ -260,8 +258,8 @@ public class fragment_report_dayChart extends Fragment {
     }
 }
 
-class MyBarDataSet extends BarDataSet {
-    public MyBarDataSet(List<BarEntry> yVals, String label) {
+class dayBarDataSet extends BarDataSet {
+    public dayBarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
     }
 
