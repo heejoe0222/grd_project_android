@@ -13,7 +13,24 @@
           "package_name": "org.grd_p.grd_project"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "41443227556-5tof9j2mos1hlc1c7kinvrseb0ff5k6s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.grd_p.grd_project",
+            "certificate_hash": "820463a4bcd059558dc8ce7b57ee2ed99fde5cdb"
+          }
+        },
+        {
+          "client_id": "41443227556-3lhibjh3lnn02cb26uvaghrbhnpk06em.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.grd_p.grd_project",
+            "certificate_hash": "250ccafbaf498a6a8b64e67ce2f2b50dbf158a7e"
+          }
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAQcWqgiRi5TcEjAvuOVeJetj4prjNp9mA"
