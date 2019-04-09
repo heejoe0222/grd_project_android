@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "41443227556",
+    "firebase_url": "https://poschair-134c8.firebaseio.com",
+    "project_id": "poschair-134c8",
+    "storage_bucket": "poschair-134c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41443227556:android:1db8f3d7f9c358bb",
+        "android_client_info": {
+          "package_name": "org.grd_p.grd_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQcWqgiRi5TcEjAvuOVeJetj4prjNp9mA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "41443227556-cuosnq6nk8011etcb30skuoeunmhopla.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

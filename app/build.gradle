@@ -32,4 +32,7 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     implementation files('libs/MPAndroidChart-v3.0.1.jar')
+    implementation 'com.google.firebase:firebase-core:16.0.1'
 }
+
+apply plugin: 'com.google.gms.google-services'
