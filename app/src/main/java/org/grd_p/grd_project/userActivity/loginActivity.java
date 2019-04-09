@@ -64,8 +64,8 @@ public class loginActivity extends AppCompatActivity {
                     return;
                 }
                 //테스트 위해 지움
-                OnLogin();
-                //showMainActivity(); //mainActivity()로 이동
+                //OnLogin();
+                showMainActivity(); //mainActivity()로 이동
             }
         });
     }

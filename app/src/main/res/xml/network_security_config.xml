@@ -3,7 +3,6 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">ec2-52-79-250-100.ap-northeast-2.compute.amazonaws.com</domain>
         <domain includeSubdomains="true">101.101.163.32</domain>
-        <!--<domain includeSubdomains="true">upload.wikimedia.org</domain>-->
     </domain-config>
 
 </network-security-config>
