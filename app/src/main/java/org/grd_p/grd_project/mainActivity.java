@@ -1,10 +1,16 @@
 package org.grd_p.grd_project;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+
+import org.grd_p.grd_project.Firebase.Constants;
 
 public class mainActivity extends AppCompatActivity {
 
@@ -67,6 +73,18 @@ public class mainActivity extends AppCompatActivity {
             }
         });
 
+        if(Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            NotificationChannel mChannel = new NotificationChannel(Constants.CHANNEL_ID, Constants.CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
 
+            mChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
     }
 }
