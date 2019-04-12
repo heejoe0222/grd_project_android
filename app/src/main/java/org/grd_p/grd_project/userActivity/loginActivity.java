@@ -64,8 +64,8 @@ public class loginActivity extends AppCompatActivity {
                     return;
                 }
                 //테스트 위해 지움
-                //OnLogin();
-                showMainActivity(); //mainActivity()로 이동
+                OnLogin();
+                //showMainActivity(); //mainActivity()로 이동
             }
         });
     }
@@ -128,7 +128,9 @@ public class loginActivity extends AppCompatActivity {
 
     public void showMainActivity(){
         finish();
-        startActivity(new Intent(getApplicationContext(), mainActivity.class));
+        Intent intent = new Intent(getApplicationContext(), mainActivity.class);
+        intent.putExtra("user_id",emailInput.getText().toString());
+        startActivity(intent);
     }
 
     public void showSignUpActivity(){

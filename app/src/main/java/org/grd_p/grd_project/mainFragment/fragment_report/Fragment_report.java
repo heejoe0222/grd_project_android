@@ -20,6 +20,7 @@ public class Fragment_report extends Fragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_report,container,false);
+        String user_id = getArguments().getString("user_id");
 
         chartContainer = rootView.findViewById(R.id.chart_container);
         //처음에 바로 보이는 화면은 주별

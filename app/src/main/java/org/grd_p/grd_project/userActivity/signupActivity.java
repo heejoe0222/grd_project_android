@@ -25,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.grd_p.grd_project.R;
+import org.grd_p.grd_project.mainActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -172,7 +173,8 @@ public class signupActivity extends AppCompatActivity {
                                     .setMessage("회원가입이 완료되었습니다!")
                                     .setNeutralButton("OK", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dlg, int sumthin) {
-                                            showAddinfoActivity(); //추가정보 입력 액티비티로 이동
+                                            //showAddinfoActivity(); //추가정보 입력 액티비티로 이동
+                                            finish(); //로그인 엑티비티로 이동
                                         }
                                     }).show(); // 팝업창 보여줌
                         }else if(reply.equals("non_serialNum")){
@@ -235,6 +237,7 @@ public class signupActivity extends AppCompatActivity {
         finish();
         startActivity(new Intent(getApplicationContext(),addinfoActivity.class));
     }
+
 
     //inputCheck 함수 : 입력되어야 하는 내용이 다 입력됐는지 검사
     public boolean inputCheck(){

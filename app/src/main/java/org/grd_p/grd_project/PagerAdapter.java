@@ -1,5 +1,6 @@
 package org.grd_p.grd_project;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,27 +13,36 @@ import org.grd_p.grd_project.mainFragment.fragment_video.Fragment_video;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
     int numOfTabs;
+    String user_id;
     private String[] fragmentTitleList= {"main","report","video","setting"};
 
-    public PagerAdapter(FragmentManager fm, int numOfTabs) {
+    public PagerAdapter(FragmentManager fm, int numOfTabs, String user_id) {
         super(fm);
         this.numOfTabs = numOfTabs;
+        this.user_id = user_id;
     }
 
     @Override
     public Fragment getItem(int i) {
+        Bundle bundle = new Bundle();
+        bundle.putString("user_id", user_id);
+
         switch (i) {
             case 0:
                 Fragment_main tab1 = new Fragment_main();
+                tab1.setArguments(bundle);
                 return tab1;
             case 1:
                 Fragment_report tab2 = new Fragment_report();
+                tab2.setArguments(bundle);
                 return tab2;
             case 2:
                 Fragment_video tab3 = new Fragment_video();
+                tab3.setArguments(bundle);
                 return tab3;
             case 3:
                 Fragment_setting tab4 = new Fragment_setting();
+                tab4.setArguments(bundle);
                 return tab4;
             default:
                 return null;

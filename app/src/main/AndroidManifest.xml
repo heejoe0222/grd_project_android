@@ -3,8 +3,8 @@
     package="org.grd_p.grd_project">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <!-- Include following permission if you want to cache images on SD card -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/app_icon"

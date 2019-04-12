@@ -35,6 +35,7 @@ import org.grd_p.grd_project.R;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 public class Fragment_main extends Fragment{
     RequestQueue requestQueue;
 
@@ -43,6 +44,7 @@ public class Fragment_main extends Fragment{
     TextView alarm_msg;
     TextView display_time;
     String img_url,posture_url;
+    String user_id;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd HH:mm");
     String[] posture_alarm;
@@ -52,6 +54,8 @@ public class Fragment_main extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_main,container,false);
         requestQueue = Volley.newRequestQueue(getContext());
+
+        user_id = getArguments().getString("user_id");
 
         posture = rootView.findViewById(R.id.imageView);
 
