@@ -26,21 +26,16 @@
                 android:text="Notification Setting"
                 />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/bell"/>
+
 
         </LinearLayout>
 
         <View
             android:id="@+id/view"
-            android:layout_width="380dp"
+            android:layout_width="240dp"
             android:layout_height="3dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/bottom_shadow" />
 
 

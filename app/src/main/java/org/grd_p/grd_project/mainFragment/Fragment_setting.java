@@ -70,6 +70,7 @@ class settingAdapter extends RecyclerView.Adapter<settingAdapter.MyViewHolder> {
 
 
         holder.CheckedTextView.setText(settingName[position]);
+        holder.CheckedTextView.setCheckMarkDrawable(R.drawable.alarm_off);
 
         // perform on Click Event Listener on CheckedTextView
         holder.CheckedTextView.setOnClickListener(new View.OnClickListener() {
@@ -79,12 +80,12 @@ class settingAdapter extends RecyclerView.Adapter<settingAdapter.MyViewHolder> {
                 if (value) {
                     // set check mark drawable and set checked property to false
 
-                    holder.CheckedTextView.setCheckMarkDrawable(R.drawable.check_ic);
+                    holder.CheckedTextView.setCheckMarkDrawable(R.drawable.alarm_off);
                     holder.CheckedTextView.setChecked(false);
                 } else {
                     // set check mark drawable and set checked property to true
 
-                    holder.CheckedTextView.setCheckMarkDrawable(R.drawable.check);
+                    holder.CheckedTextView.setCheckMarkDrawable(R.drawable.alarm_on);
                     holder.CheckedTextView.setChecked(true);
                 }
 
