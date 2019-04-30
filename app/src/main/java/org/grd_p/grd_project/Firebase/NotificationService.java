@@ -20,6 +20,7 @@ public class NotificationService extends FirebaseMessagingService{
         String body = remoteMessage.getNotification().getBody();
         org.grd_p.grd_project.Firebase.NotificationManager.getInstance(getApplicationContext())
                 .displayNotification(title, body);
-    }
 
+        //TODO: 여기에 이미지랑 자세 등 업데이트..?! 알림 받을 때?
+    }
 }
