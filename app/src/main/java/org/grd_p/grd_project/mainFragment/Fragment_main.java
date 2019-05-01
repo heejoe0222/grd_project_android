@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -99,6 +100,9 @@ public class Fragment_main extends Fragment{
         });
 
         getPosture(posture_url);
+
+        //subscribing to the topic poschair for notification
+        FirebaseMessaging.getInstance().subscribeToTopic("poschair");
 
         refresh = rootView.findViewById(R.id.refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
