@@ -1,5 +1,7 @@
 package org.grd_p.grd_project;
 
+
+import android.content.Intent;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.graphics.Color;
@@ -19,16 +21,18 @@ public class mainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        String user_id = intent.getExtras().getString("user_id");
 
-        final TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
+        final TabLayout tabLayout = findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        ViewPager viewPager = (ViewPager)findViewById(R.id.container);
-        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        ViewPager viewPager = findViewById(R.id.container);
+        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount(),user_id);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 

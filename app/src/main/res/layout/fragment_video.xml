@@ -63,13 +63,25 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"/>
 
+            <TextView
+                android:id="@+id/updateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recycler_view_video"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:text="Last update: not updated yet"
+                android:textColor="@color/font_color"
+                android:textSize="15dp" />
+
             <View
                 android:id="@+id/view2"
                 android:layout_width="380dp"
                 android:layout_height="3dp"
-                android:layout_below="@id/recycler_view_video"
+                android:layout_below="@id/updateTime"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/bottom_shadow" />
 
             <TextView
@@ -96,6 +108,19 @@
                 android:layout_marginBottom="10dp"/>
 
             <!--좋아요한 영상 없을 경우 textview 넣기-->
+            <TextView
+                android:id="@+id/isFavoriteVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_below="@+id/recycler_view_video_like"
+                android:text="No FAVORITE video yet!"
+                android:textColor="@android:color/black"
+                android:textSize="20dp" />
+
+
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>

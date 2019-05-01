@@ -24,6 +24,8 @@ public class Fragment_setting extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_setting,container,false);
 
+        String user_id = getArguments().getString("user_id");
+
         listView = rootView.findViewById(R.id.listView);
         adapter = new settingAdapter(getContext(),bodypart);
 
