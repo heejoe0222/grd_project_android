@@ -74,6 +74,7 @@ public class Fragment_video extends Fragment {
     private TextView updateTime, isFavoriteVideo;
     String user_id;
     private String getVideo_url = "http://101.101.163.32/video";
+    private String getLikeVideo_url = "http://101.101.163.32/likeVideo";
     private String changeVideoLike_url = "http://101.101.163.32/changeVideoLike";
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd HH:mm");
 
@@ -110,10 +111,7 @@ public class Fragment_video extends Fragment {
         //비디오 리스트 부분
         setVideoInfo(); //장치나 서버에서 데이터 받아와  video_array 변수에 저장
         setUpRecyclerView(rootView);
-        populateRecyclerView();
 
-        //좋아요한 비디오 리스트 부분
-        populateRecyclerView2();
         return rootView;
     }
 
@@ -142,12 +140,14 @@ public class Fragment_video extends Fragment {
                                     JSONObject video = response.getJSONObject(i);
 
                                     // Get the current student (json object) data
-                                    String videoID = video.getString("videoID");
-                                    String title = video.getString("title");
-                                    int viewNum = video.getInt("viewNum");
-                                    String str_viewNum = Integer.toString(viewNum)+" views";
-                                    String postedTime = video.getString("postedTime");
-                                    int videoLike = video.getInt("videoLike");
+                                    String videoID = video.getString("vidID");
+                                    String title = video.getString("vidTitle");
+                                    int viewNum = video.getInt("view");
+                                    String str_viewNum = viewNum+" views";
+                                    String postedTime = video.getString("uploadDate");
+                                    int videoLike = video.getInt("liked");
+                                    Log.d("DBGLOG","vidID: "+videoID+", title: "+title+", str_viewNum: "+str_viewNum);
+                                    Log.d("DBGLOG","postedTime: "+postedTime+", videoLike: "+videoLike);
 
                                     video_id_array.add(videoID);
                                     video_title_array.add(title);
@@ -159,6 +159,29 @@ public class Fragment_video extends Fragment {
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
+
+                            if(db!=null) {
+                                db.execSQL("delete from video");
+                                Log.d("DBGLOG", "success to delete video db");
+                                String sql = "insert into video(videoID, title, viewNum, postedTime, videoLike) values (?,?,?,?,?)";
+                                for (int i = 0; i < video_id_array.size(); i++) {
+                                    int viewNum = Integer.parseInt(video_viewNum_array.get(i).split(" ")[0]);
+                                    Object[] params = {video_id_array.get(i), video_title_array.get(i), viewNum, video_postedTime_array.get(i), video_liked_array.get(i)};
+                                    db.execSQL(sql, params);
+                                    Log.d("DBGLOG", "success to insert video db");
+                                }
+                            }else{
+                                Log.d("DBGLOG","not exist db");
+                            }
+
+                            setVideoInitialize();
+
+                            Log.d("DBGLOG","finish conneciton");
+
+                            populateRecyclerView();
+                            setUpdateTimefromServer();
+
+
                         }
                     },
                     new Response.ErrorListener(){
@@ -167,48 +190,60 @@ public class Fragment_video extends Fragment {
                             Log.d("DBGLOG","error to get videoJsonArray");
                         }
                     }
-            ){
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String,String> params = new HashMap<String,String>();
-                    params.put("user_id",user_id);
-                    params.put("isVideoLike","0");
-                    return params;
-                }
-            };
+            );
             requestQueue.add(jsonArrayRequest);
 
             JsonArrayRequest jsonArrayRequest2 = new JsonArrayRequest(
                     Request.Method.GET,
-                    getVideo_url,
+                    getLikeVideo_url,
                     null,
                     new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
+                            Log.d("DBGLOG","likevideo response: "+response);
+                            if (response!=null) {
+                                // Process the JSON
+                                try{
+                                    for(int i=0;i<response.length();i++){
+                                        JSONObject video = response.getJSONObject(i);
 
-                            // Process the JSON
-                            try{
-                                for(int i=0;i<response.length();i++){
-                                    JSONObject video = response.getJSONObject(i);
+                                        // Get the current student (json object) data
+                                        String videoID = video.getString("vidID");
+                                        Log.d("DBGLOG","LIKEvidID: "+videoID);
+                                        String title = video.getString("vidTitle");
+                                        int viewNum = video.getInt("view");
+                                        String str_viewNum = viewNum+" views";
+                                        String postedTime = video.getString("uploadDate");
+                                        int videoLike = video.getInt("liked");
 
-                                    // Get the current student (json object) data
-                                    String videoID = video.getString("videoID");
-                                    String title = video.getString("title");
-                                    int viewNum = video.getInt("viewNum");
-                                    String str_viewNum = Integer.toString(viewNum)+" views";
-                                    String postedTime = video.getString("postedTime");
-                                    int videoLike = video.getInt("videoLike");
+                                        likeVideo_id_array.add(videoID);
+                                        likeVideo_title_array.add(title);
+                                        likeVideo_viewNum_array.add(str_viewNum);
+                                        likeVideo_postedTime_array.add(postedTime);
+                                        likeVideo_liked_array.add(videoLike);
 
-                                    likeVideo_id_array.add(videoID);
-                                    likeVideo_title_array.add(title);
-                                    likeVideo_viewNum_array.add(str_viewNum);
-                                    likeVideo_postedTime_array.add(postedTime);
-                                    likeVideo_liked_array.add(videoLike);
-
+                                    }
+                                }catch (JSONException e){
+                                    e.printStackTrace();
                                 }
-                            }catch (JSONException e){
-                                e.printStackTrace();
+                            }else{
+                                Log.d("DBGLOG","likevideo response null");
                             }
+                            //서버에서 받아온 내용 내부 DB에 업데이트
+                            if(db!=null){
+                                db.execSQL("delete from likeVideo");
+                                String sql = "insert into likeVideo(videoID, title, viewNum, postedTime, videoLike) values (?,?,?,?,?)";
+                                for (int i=0;i<likeVideo_id_array.size();i++){
+                                    int viewNum=Integer.parseInt(likeVideo_viewNum_array.get(i).split(" ")[0]);
+                                    Object[] params = {likeVideo_id_array.get(i),likeVideo_title_array.get(i),viewNum,likeVideo_postedTime_array.get(i),likeVideo_liked_array.get(i)};
+                                    db.execSQL(sql,params);
+                                }
+                            }else{
+                                Log.d("DBGLOG","not exist db");
+                            }
+
+                            //좋아요한 비디오 리스트 부분
+                            populateRecyclerView2();
                         }
                     },
                     new Response.ErrorListener(){
@@ -217,38 +252,9 @@ public class Fragment_video extends Fragment {
                             Log.d("DBGLOG","error to get videoJsonArray");
                         }
                     }
-            ){
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String,String> params = new HashMap<String,String>();
-                    params.put("user_id",user_id);
-                    params.put("isVideoLike","1");
-                    return params;
-                }
-            };
+            );
             requestQueue.add(jsonArrayRequest2);
 
-            //서버에서 받아온 내용 내부 DB에 업데이트
-            if(db!=null){
-                db.execSQL("delete from video");
-                String sql = "insert into video(videoID, title, viewNum, postedTime, videoLike) values (?,?,?,?,?)";
-                for (int i=0;i<video_id_array.size();i++){
-                    int viewNum=Integer.parseInt(video_viewNum_array.get(i).split(" ")[0]);
-                    Object[] params = {video_id_array.get(i),video_title_array.get(i),viewNum,video_postedTime_array.get(i),video_liked_array.get(i)};
-                    db.execSQL(sql,params);
-                }
-
-                db.execSQL("delete from likeVideo");
-                sql = "insert into likeVideo(videoID, title, viewNum, postedTime, videoLike) values (?,?,?,?,?)";
-                for (int i=0;i<likeVideo_id_array.size();i++){
-                    int viewNum=Integer.parseInt(likeVideo_viewNum_array.get(i).split(" ")[0]);
-                    Object[] params = {likeVideo_id_array.get(i),likeVideo_title_array.get(i),viewNum,likeVideo_postedTime_array.get(i),likeVideo_liked_array.get(i)};
-                    db.execSQL(sql,params);
-                }
-            }else{
-                Log.d("DBGLOG","not exist db");
-            }
-            setUpdateTimefromServer();
 
         }else{ //기기장치에서 받아옴 (내부 DB)
 
@@ -263,7 +269,7 @@ public class Fragment_video extends Fragment {
                     cursor.moveToNext();
                     video_id_array.add(cursor.getString(0));
                     video_title_array.add(cursor.getString(1));
-                    String s_viewNum=Integer.toString(cursor.getInt(2))+" views";
+                    String s_viewNum=cursor.getInt(2)+" views";
                     video_viewNum_array.add(s_viewNum);
                     video_postedTime_array.add(cursor.getString(3));
                     video_liked_array.add(cursor.getInt(4));
@@ -282,7 +288,7 @@ public class Fragment_video extends Fragment {
                     cursor.moveToNext();
                     likeVideo_id_array.add(cursor.getString(0));
                     likeVideo_title_array.add(cursor.getString(1));
-                    String s_viewNum=Integer.toString(cursor.getInt(2))+" views";
+                    String s_viewNum=cursor.getInt(2)+" views";
                     likeVideo_viewNum_array.add(s_viewNum);
                     likeVideo_postedTime_array.add(cursor.getString(3));
                     likeVideo_liked_array.add(cursor.getInt(4));
@@ -295,9 +301,14 @@ public class Fragment_video extends Fragment {
 
         }
 
+    }
+
+    public void setVideoInitialize(){
         //기존에 디바이스에 저장된 정보 없을 경우 string.xml에 미리 세팅된 값 가져와서 띄움
         if((video_id_array.isEmpty()) && (video_liked_array.isEmpty()) && (video_title_array.isEmpty())
                 && (video_viewNum_array.isEmpty()) && (video_postedTime_array.isEmpty())){
+
+            Log.d("DBGLOG","not exist innerdb");
 
             String[] videoIDArray = getResources().getStringArray(R.array.video_id_array);
             String[] videoTitleArray =getResources().getStringArray(R.array.video_title_array);
@@ -328,6 +339,7 @@ public class Fragment_video extends Fragment {
             }
         }
     }
+
 
     class DatabaseHelper extends SQLiteOpenHelper{
         public DatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {

@@ -221,16 +221,14 @@ public class signupActivity extends AppCompatActivity {
                 Map<String,String> params = new HashMap<>();
                 Log.d("DBGLOG","getParams");
                 params.put("name",nameInput.getText().toString());
-                params.put("password",pwInput.getText().toString());
+                params.put("pwd",pwInput.getText().toString());
                 params.put("serialnumber",serialnumber.getText().toString());
                 params.put("email",emailInput.getText().toString());
                 return params;
             }
         };
         request.setShouldCache(false);
-        Log.d("DBGLOG","BeforeRequest");
         requestQueue.add(request);
-        Log.d("DBGLOG","AfterRequest");
     }
 
     public void showAddinfoActivity(){

@@ -81,6 +81,7 @@ public class loginActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         //Log.d("DBGLOG","onResponse");
                         reply =  response; //응답 받은 string
+                        Log.d("DBGLOG","responese: "+reply);
                         if(reply.equals("success")){
                             showMainActivity(); //mainActivity()로 이동
                         }else if(reply.equals("wrong_pw")){
@@ -118,7 +119,7 @@ public class loginActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String,String> params = new HashMap<String,String>();
                 params.put("email",emailInput.getText().toString());
-                params.put("password",pwInput.getText().toString());
+                params.put("pwd",pwInput.getText().toString());
                 return params;
             }
         };
