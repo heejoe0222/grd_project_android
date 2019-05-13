@@ -1,13 +1,9 @@
 package org.grd_p.grd_project.mainFragment.fragment_video;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,9 +25,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.grd_p.grd_project.NetworkStatus;
+import org.grd_p.grd_project.PoschairDB.DataBaseAdapter;
 import org.grd_p.grd_project.R;
-import org.grd_p.grd_project.sharedPreference;
-import org.grd_p.grd_project.userActivity.loginActivity;
+import org.grd_p.grd_project.PoschairDB.DatabaseHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,6 +67,9 @@ public class Fragment_video extends Fragment {
     private ArrayList<YoutubeVideoModel> likeVideo_array = new ArrayList<>();
 
     SQLiteDatabase db;
+    DataBaseAdapter dbAdapter;
+    DatabaseHelper helper;
+
     private TextView updateTime, isFavoriteVideo;
     String user_id;
     private String getVideo_url = "http://101.101.163.32/video";
@@ -116,7 +115,8 @@ public class Fragment_video extends Fragment {
     }
 
     private void setVideoInfo(){
-        DatabaseHelper helper = new DatabaseHelper(getContext(),"user_video",null,1);
+        helper = new DatabaseHelper(getContext());
+        dbAdapter = new DataBaseAdapter(getContext());
         db = helper.getWritableDatabase();
 
         int status = NetworkStatus.getConnectivityStatus(getContext());
@@ -161,14 +161,12 @@ public class Fragment_video extends Fragment {
                             }
 
                             if(db!=null) {
-                                db.execSQL("delete from video");
-                                Log.d("DBGLOG", "success to delete video db");
-                                String sql = "insert into video(videoID, title, viewNum, postedTime, videoLike) values (?,?,?,?,?)";
+                                dbAdapter.deleteTable("video");
                                 for (int i = 0; i < video_id_array.size(); i++) {
                                     int viewNum = Integer.parseInt(video_viewNum_array.get(i).split(" ")[0]);
                                     Object[] params = {video_id_array.get(i), video_title_array.get(i), viewNum, video_postedTime_array.get(i), video_liked_array.get(i)};
-                                    db.execSQL(sql, params);
-                                    Log.d("DBGLOG", "success to insert video db");
+                                    dbAdapter.InsertTable1Data(params);
+
                                 }
                             }else{
                                 Log.d("DBGLOG","not exist db");
@@ -209,7 +207,6 @@ public class Fragment_video extends Fragment {
 
                                         // Get the current student (json object) data
                                         String videoID = video.getString("vidID");
-                                        Log.d("DBGLOG","LIKEvidID: "+videoID);
                                         String title = video.getString("vidTitle");
                                         int viewNum = video.getInt("view");
                                         String str_viewNum = viewNum+" views";
@@ -231,12 +228,11 @@ public class Fragment_video extends Fragment {
                             }
                             //서버에서 받아온 내용 내부 DB에 업데이트
                             if(db!=null){
-                                db.execSQL("delete from likeVideo");
-                                String sql = "insert into likeVideo(videoID, title, viewNum, postedTime, videoLike) values (?,?,?,?,?)";
+                                dbAdapter.deleteTable("likeVideo");
                                 for (int i=0;i<likeVideo_id_array.size();i++){
                                     int viewNum=Integer.parseInt(likeVideo_viewNum_array.get(i).split(" ")[0]);
                                     Object[] params = {likeVideo_id_array.get(i),likeVideo_title_array.get(i),viewNum,likeVideo_postedTime_array.get(i),likeVideo_liked_array.get(i)};
-                                    db.execSQL(sql,params);
+                                    dbAdapter.InsertTable2Data(params);
                                 }
                             }else{
                                 Log.d("DBGLOG","not exist db");
@@ -295,6 +291,7 @@ public class Fragment_video extends Fragment {
                 }
 
                 cursor.close();
+                db.close();
             }else{
                 Log.d("DBGLOG","not exist db");
             }
@@ -325,53 +322,17 @@ public class Fragment_video extends Fragment {
             }
 
             if(db!=null){
-                String sql = "insert into video(videoID, title, viewNum, postedTime, videoLike) values (?,?,?,?,?)";
                 for (int i=0;i<video_id_array.size();i++){
                     int viewNum=Integer.parseInt(video_viewNum_array.get(i).split(" ")[0]);
                     Object[] params = {video_id_array.get(i),video_title_array.get(i),viewNum,video_postedTime_array.get(i),video_liked_array.get(i)};
-                    db.execSQL(sql,params);
+                    dbAdapter.InsertTable1Data(params);
                 }
-                sql ="select count(*) from video";
+                String sql ="select count(*) from video";
                 Cursor cursor = db.rawQuery(sql,null);
                 cursor.moveToFirst();
                 int count = cursor.getInt(0);
-                Log.d("DBGLOG","inner db insert success! count: "+Integer.toString(count));
-            }
-        }
-    }
-
-
-    class DatabaseHelper extends SQLiteOpenHelper{
-        public DatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-            super(context, name, factory, version);
-        }
-
-        //schema: (videoID text PRIMARY KEY, title text, viewNum text, postedTime text, videoLike integer)
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            String name = "video";
-            String sql = "create table if not exists "+name+" (videoID text PRIMARY KEY, title text, viewNum integer, postedTime text, videoLike integer)";
-            db.execSQL(sql);
-
-            name = "likeVideo";
-            sql = "create table if not exists "+name+" (videoID text PRIMARY KEY, title text, viewNum integer, postedTime text, videoLike integer)";
-            db.execSQL(sql);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int old_v, int new_v) {
-            if(new_v>1){
-                String tableName ="video";
-                db.execSQL("drop table if exists "+tableName);
-
-                String sql = "create table if not exists "+tableName+" (videoID text PRIMARY KEY, title text, viewNum integer, postedTime text, videoLike integer)";
-                db.execSQL(sql);
-
-                tableName ="likeVideo";
-                db.execSQL("drop table if exists "+tableName);
-
-                sql = "create table if not exists "+tableName+" (videoID text PRIMARY KEY, title text, viewNum integer, postedTime text, videoLike integer)";
-                db.execSQL(sql);
+                Log.d("DBGLOG","inner db insert success! count: "+count);
+                db.close();
             }
         }
     }
@@ -423,37 +384,37 @@ public class Fragment_video extends Fragment {
 
     //schema: (videoID text PRIMARY KEY, title text, viewNum text, postedTime text, videoLike integer)
     public void insertTolikeVideo(String videoID, String title, int viewNum, String postedTime){ //videoDB 업데이트(1) 하고 likeVideoDB에 추가
+        db = helper.getWritableDatabase();
         if(db!=null){
-            String sql = "insert into likeVideo(videoID, title, viewNum, postedTime, videoLike) values (?,?,?,?,?)";
             Object[] params = {videoID,title,viewNum,postedTime,1};
-            db.execSQL(sql,params);
+            dbAdapter.InsertTable2Data(params);
             Log.d("DBGLOG","success to insert favorite video data");
 
             db.execSQL("UPDATE video SET videoLike=1 WHERE videoID='"+videoID+"'");
+            db.close();
         }else{
             Log.d("DBGLOG","not exist db");
         }
     }
 
     public void deleteFromlikeVideo(String videoID){ //videoDB 업데이트(0) 하고 likeVideoDB에서 삭제
-        Log.d("DBGLOG","deleteFromlikeVideo");
+        db = helper.getWritableDatabase();
         if(db!=null){
-            String sql = "delete from likeVideo where videoID='"+videoID+"'";
-            db.execSQL(sql);
-            Log.d("DBGLOG","success to delete favorite video data");
 
+            db.execSQL("delete from likeVideo where videoID='"+videoID+"'");
             db.execSQL("UPDATE video SET videoLike=0 WHERE videoID='"+videoID+"'");
-            Log.d("DBGLOG","success to update videoLike value");
+
+            db.close();
         }else{
             Log.d("DBGLOG","not exist db");
         }
     }
 
     public void deleteFromlikeVideo2(String videoID){ //likeVideo에만 존재했던 영상, likeVideoDB에서 삭제
+        db = helper.getWritableDatabase();
         if(db!=null){
-            String sql = "delete from likeVideo where videoID='"+videoID+"'";
-            db.execSQL(sql);
-            Log.d("DBGLOG","success to update videoLike value");
+            db.execSQL("delete from likeVideo where videoID='"+videoID+"'");
+            db.close();
         }else{
             Log.d("DBGLOG","not exist db");
         }

@@ -123,6 +123,7 @@ public class Fragment_main extends Fragment{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("DBGLOG","onErrorResponse "+error);
+                        display_time.setText("Fail to load new posture :( \nPlease try again..!");
                     }
                 });
                 request.setShouldCache(false);
@@ -178,6 +179,7 @@ public class Fragment_main extends Fragment{
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("DBGLOG","onErrorResponse: "+error);
+                display_time.setText("Fail to load new posture :( \nPlease try again..!");
             }
         });
         request.setShouldCache(false);

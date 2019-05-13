@@ -38,7 +38,7 @@ public class fragment_report_monthChart extends Fragment {
     Button monthBefore, monthAfter, info;
 
     float right_ratio, wrong_ratio;
-    float Left_ratio, Right_ratio, Straight_ratio,Distorted_ratio;
+    float Left_ratio, Right_ratio, Straight_ratio, Distorted_ratio;
     float Turtle, Slouched, PelvisImbalance, Scoliosis, HipPain, KneePain, PoorCirculation;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -117,7 +117,7 @@ public class fragment_report_monthChart extends Fragment {
         yValues.add(new BarEntry(6,PoorCirculation));
 
         //monthBarDataSet dataset = new monthBarDataSet(yValues, "잘못 앉은 시간 (단위: 시간)");
-        monthBarDataSet dataset = new monthBarDataSet(yValues, "Wrong Sitting time (unit: hour)");
+        monthBarDataSet dataset = new monthBarDataSet(yValues, "Wrong Sitting time (unit: %)");
         dataset.setValueTextSize(13);
         dataset.setColors(new int[] {R.color.theme1,R.color.theme2,R.color.theme3},getContext());
         ArrayList<BarDataSet> dataSets = new ArrayList<>();
@@ -215,7 +215,7 @@ public class fragment_report_monthChart extends Fragment {
 
 //        yValues.add(new PieEntry(Straight_ratio,"바른 골반"));
 //        yValues.add(new PieEntry(Distorted_ratio,"삐뚤어진 골반"));
-        yValues.add(new PieEntry(Straight_ratio,"Right pelvis"));
+        yValues.add(new PieEntry(Straight_ratio,"Correct pelvis"));
         yValues.add(new PieEntry(Distorted_ratio,"Crooked pelvis"));
 
         Description description = new Description();

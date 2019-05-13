@@ -15,7 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import org.grd_p.grd_project.Firebase.Constants;
 
 public class mainActivity extends AppCompatActivity {
-
+    PagerAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class mainActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         ViewPager viewPager = findViewById(R.id.container);
-        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount(),user_id);
+        adapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount(),user_id);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -90,5 +90,12 @@ public class mainActivity extends AppCompatActivity {
 
             mNotificationManager.createNotificationChannel(mChannel);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!(adapter==null))
+            adapter.notifyDataSetChanged();
     }
 }

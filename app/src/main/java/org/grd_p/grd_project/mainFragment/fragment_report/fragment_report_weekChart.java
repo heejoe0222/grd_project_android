@@ -117,7 +117,7 @@ public class fragment_report_weekChart extends Fragment {
         yValues.add(new BarEntry(6,PoorCirculation));
 
         //weekBarDataSet dataset = new weekBarDataSet(yValues, "잘못 앉은 시간 (단위: 시간)");
-        weekBarDataSet dataset = new weekBarDataSet(yValues, "Wrong Sitting time (unit: hour)");
+        weekBarDataSet dataset = new weekBarDataSet(yValues, "Wrong Sitting time (unit: %)");
         dataset.setValueTextSize(13);
         dataset.setColors(new int[] {R.color.theme1,R.color.theme2,R.color.theme3},getContext());
         ArrayList<BarDataSet> dataSets = new ArrayList<>();
@@ -215,7 +215,7 @@ public class fragment_report_weekChart extends Fragment {
 
 //        yValues.add(new PieEntry(Straight_ratio,"바른 골반"));
 //        yValues.add(new PieEntry(Distorted_ratio,"삐뚤어진 골반"));
-        yValues.add(new PieEntry(Straight_ratio,"Right pelvis"));
+        yValues.add(new PieEntry(Straight_ratio,"Correct pelvis"));
         yValues.add(new PieEntry(Distorted_ratio,"Crooked pelvis"));
 
         Description description = new Description();
