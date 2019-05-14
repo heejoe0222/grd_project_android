@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class Fragment_setting extends Fragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_setting,container,false);
+        Log.d("DBGLOG FRAG","setting");
 
         String user_id = getArguments().getString("user_id");
 
@@ -72,7 +74,7 @@ class settingAdapter extends RecyclerView.Adapter<settingAdapter.MyViewHolder> {
 
 
         holder.CheckedTextView.setText(settingName[position]);
-        holder.CheckedTextView.setCheckMarkDrawable(R.drawable.alarm_off);
+        holder.CheckedTextView.setCheckMarkDrawable(R.drawable.alarm_on);
 
         // perform on Click Event Listener on CheckedTextView
         holder.CheckedTextView.setOnClickListener(new View.OnClickListener() {

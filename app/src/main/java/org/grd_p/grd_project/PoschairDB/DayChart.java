@@ -135,4 +135,22 @@ public class DayChart {
     public void setLeft_pelvis(int left_pelvis) {
         this.left_pelvis = left_pelvis;
     }
+
+    @Override
+    public String toString() {
+        return "DayChart{" +
+                "date='" + date + '\'' +
+                ", k0=" + k0 +
+                ", k1=" + k1 +
+                ", k2=" + k2 +
+                ", k3=" + k3 +
+                ", k4=" + k4 +
+                ", k5=" + k5 +
+                ", k6=" + k6 +
+                ", total_sitting_time=" + total_sitting_time +
+                ", correct_sitting_time=" + correct_sitting_time +
+                ", correct_pelvis=" + correct_pelvis +
+                ", left_pelvis=" + left_pelvis +
+                '}';
+    }
 }

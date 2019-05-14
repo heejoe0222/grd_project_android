@@ -103,7 +103,7 @@ public class fragment_report_monthChart extends Fragment {
             }});
         AlertDialog alert = dialogBuilder.create();
         alert.show();
-        alert.getWindow().setLayout(750,800);
+        alert.getWindow().setLayout(950,1100);
     }
 
     public void barChart_dataSet(){

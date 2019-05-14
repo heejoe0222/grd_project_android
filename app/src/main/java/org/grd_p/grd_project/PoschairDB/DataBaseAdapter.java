@@ -26,7 +26,12 @@ public class DataBaseAdapter {
     public void close() {
         dbHelper.close();
     }
-
+    public void dbclose() {
+        database.close();
+    }
+    public void dbopen() {
+        database= dbHelper.getWritableDatabase();
+    }
 
     public Cursor fetchAllTable3data(String date) {
         return database.query(DayChart.TABLE_NAME,
@@ -35,7 +40,7 @@ public class DataBaseAdapter {
                         DayChart.KEYWORD4, DayChart.KEYWORD5,DayChart.KEYWORD6,
                         DayChart.CORRECT_PELVIS,DayChart.LEFT_PELVIS},
                 DayChart.DATE + "=?",
-                new String[]{String.valueOf(date)}, null, null, null,null);
+                new String[]{date}, null, null, null,null);
     }
 
     public Cursor fetchAllTable4data(String week) {
@@ -59,7 +64,7 @@ public class DataBaseAdapter {
     }
 
     public void deleteTable(String tablename){
-        database.execSQL("drop table if exists "+tablename+';');
+        database.execSQL("delete from "+tablename+';');
     }
     public void createIndividualTable(String query){
         database.execSQL(query);

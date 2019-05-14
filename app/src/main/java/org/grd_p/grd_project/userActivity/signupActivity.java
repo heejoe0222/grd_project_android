@@ -177,16 +177,6 @@ public class signupActivity extends AppCompatActivity {
                                             finish(); //로그인 엑티비티로 이동
                                         }
                                     }).show(); // 팝업창 보여줌
-                        }else if(reply.equals("non_serialNum")){
-                            new AlertDialog.Builder(signupActivity.this)
-                                    .setTitle("Fail to sign up")
-                                    .setMessage("존재하지 않는 시리얼번호입니다!\n다시 입력해주세요.")
-                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dlg, int sumthin) {
-                                            serialnumber.getText().clear();
-                                            return;
-                                        }
-                                    }).show(); // 팝업창 보여줌
                         }else if(reply.equals("already_existed")){
                             new AlertDialog.Builder(signupActivity.this)
                                     .setTitle("Fail to sign up")

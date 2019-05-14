@@ -64,8 +64,8 @@ public class loginActivity extends AppCompatActivity {
                     return;
                 }
                 //테스트 위해 지움
-                //OnLogin();
-                showMainActivity(); //mainActivity()로 이동
+                OnLogin();
+                //showMainActivity(); //mainActivity()로 이동
             }
         });
     }
@@ -117,9 +117,10 @@ public class loginActivity extends AppCompatActivity {
         ){
             @Override
             protected Map<String, String> getParams() {
-                Map<String,String> params = new HashMap<String,String>();
+                Map<String,String> params = new HashMap<>();
                 params.put("email",emailInput.getText().toString());
                 params.put("pwd",pwInput.getText().toString());
+                Log.d("DBGLOG","return params: "+emailInput.getText().toString());
                 return params;
             }
         };

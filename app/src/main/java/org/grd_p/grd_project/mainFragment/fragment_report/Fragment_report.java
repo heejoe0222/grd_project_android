@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,14 @@ import org.grd_p.grd_project.R;
 public class Fragment_report extends Fragment{
     Button dayButton,weekButton,monthButton;
     FrameLayout chartContainer;
+
     fragment_report_dayChart dayFragment;
     fragment_report_weekChart weekFragment;
     fragment_report_monthChart monthFragment;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_report,container,false);
+        Log.d("DBGLOG FRAG","report");
         String user_id = getArguments().getString("user_id");
 
         chartContainer = rootView.findViewById(R.id.chart_container);

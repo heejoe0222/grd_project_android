@@ -72,13 +72,14 @@ public class Fragment_video extends Fragment {
 
     private TextView updateTime, isFavoriteVideo;
     String user_id;
-    private String getVideo_url = "http://101.101.163.32/video";
-    private String getLikeVideo_url = "http://101.101.163.32/likeVideo";
-    private String changeVideoLike_url = "http://101.101.163.32/changeVideoLike";
+    private String getVideo_url = "http://101.101.163.32/video/";
+    private String getLikeVideo_url = "http://101.101.163.32/likeVideo/";
+    private String changeVideoLike_url = "http://101.101.163.32/changeVideoLike/";
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd HH:mm");
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_video,container,false);
+        Log.d("DBGLOG FRAG","video");
 
         user_id = getArguments().getString("user_id");
         requestQueue = Volley.newRequestQueue(getContext());
@@ -117,6 +118,7 @@ public class Fragment_video extends Fragment {
     private void setVideoInfo(){
         helper = new DatabaseHelper(getContext());
         dbAdapter = new DataBaseAdapter(getContext());
+        dbAdapter.open();
         db = helper.getWritableDatabase();
 
         int status = NetworkStatus.getConnectivityStatus(getContext());

@@ -54,6 +54,7 @@ public class Fragment_main extends Fragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_main,container,false);
+        Log.d("DBGLOG FRAG","MAIN");
         requestQueue = Volley.newRequestQueue(getContext());
 
         user_id = getArguments().getString("user_id");

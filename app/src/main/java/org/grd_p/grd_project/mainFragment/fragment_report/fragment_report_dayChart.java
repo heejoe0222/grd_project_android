@@ -3,7 +3,6 @@ package org.grd_p.grd_project.mainFragment.fragment_report;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -45,6 +45,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,7 +64,7 @@ public class fragment_report_dayChart extends Fragment {
 
     DataBaseAdapter dbAdapter;
 
-    private String getDayChart_url = "http://101.101.163.32/dayChart";
+    private String getDayChart_url = "http://101.101.163.32/dayChart/";
     String user_id;
 
     float right_ratio, wrong_ratio;
@@ -81,7 +82,7 @@ public class fragment_report_dayChart extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_report_daychart, container, false);
         requestQueue = Volley.newRequestQueue(getContext());
-        user_id = getArguments().getString("user_id");
+        //user_id = getArguments().getString("user_id"); //왜 여기서 에러나는지?
 
         review = rootView.findViewById(R.id.review); //total time 표시하는 텍스트 뷰
         day = rootView.findViewById(R.id.day); //날짜 표시하는 텍스트 뷰
@@ -91,6 +92,8 @@ public class fragment_report_dayChart extends Fragment {
         right_ratio=40f;wrong_ratio=60f;
         Left_ratio=45f; Right_ratio=55f;
         Straight_ratio=30f; Distorted_ratio=70f;
+        Turtle=10f; Slouched=25f; PelvisImbalance=3f; Scoliosis=12f; HipPain=30f; KneePain=5f; PoorCirculation=15f;
+
 
         info = rootView.findViewById(R.id.info);
         info.setOnClickListener(new View.OnClickListener() {
@@ -117,9 +120,9 @@ public class fragment_report_dayChart extends Fragment {
                 currentDate = simpleDateFormat.format(cal.getTime()); //currentDate 하루 전으로 update
                 chartValue_Setting(currentDate);
 
-                //gui 부분 갱신
+                //gui 갱신
                 dayAfter.setEnabled(true);
-                day.setText(simpleDateFormat2.format(cal.getTime()));
+                //day.setText(simpleDateFormat2.format(cal.getTime()));
                 cal.add(Calendar.DATE, -1);
                 isChartInfo(simpleDateFormat.format(cal.getTime()),-1); //이전날짜 정보 있는지 확인
             }
@@ -139,9 +142,9 @@ public class fragment_report_dayChart extends Fragment {
                 currentDate = simpleDateFormat.format(cal.getTime()); //currentDate 하루 뒤로 update
                 chartValue_Setting(currentDate);
 
-                //gui 부분 갱신
+                //gui 갱신
                 dayBefore.setEnabled(true);
-                day.setText(simpleDateFormat2.format(cal.getTime()));
+                //day.setText(simpleDateFormat2.format(cal.getTime()));
                 cal.add(Calendar.DATE, +1);
                 isChartInfo(simpleDateFormat.format(cal.getTime()),1); //다음날짜 정보 있는지 확인
             }
@@ -165,8 +168,10 @@ public class fragment_report_dayChart extends Fragment {
 
         //서버에서 받아옴
         if(status==NetworkStatus.TYPE_MOBILE || status==NetworkStatus.TYPE_WIFI) {
+            Log.d("DBGLOG","setDayChartInfo");
+
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                    Request.Method.POST,
+                    Request.Method.GET,
                     getDayChart_url,
                     null,
                     new Response.Listener<JSONArray>() {
@@ -185,9 +190,9 @@ public class fragment_report_dayChart extends Fragment {
                                 for(int i=0;i<response.length();i++){
                                     JSONObject chartInfo = response.getJSONObject(i);
 
-                                    day.setDate(chartInfo.getString("date"));
-                                    day.setTotal_sitting_time(chartInfo.getInt("total"));
-                                    day.setCorrect_sitting_time(chartInfo.getInt("correct"));
+                                    day.setDate(chartInfo.getString("DATE"));
+                                    day.setTotal_sitting_time(chartInfo.getInt("TOTAL_SITTING"));
+                                    day.setCorrect_sitting_time(chartInfo.getInt("CORRECT_SITTING"));
                                     day.setK0(chartInfo.getInt("k0"));
                                     day.setK1(chartInfo.getInt("k1"));
                                     day.setK2(chartInfo.getInt("k2"));
@@ -195,8 +200,10 @@ public class fragment_report_dayChart extends Fragment {
                                     day.setK4(chartInfo.getInt("k4"));
                                     day.setK5(chartInfo.getInt("k5"));
                                     day.setK6(chartInfo.getInt("k6"));
-                                    day.setCorrect_pelvis(chartInfo.getInt("correct_pelvis"));
-                                    day.setLeft_pelvis(chartInfo.getInt("left_pelvis"));
+                                    day.setCorrect_pelvis(chartInfo.getInt("CORRECT_PELVIS"));
+                                    day.setLeft_pelvis(chartInfo.getInt("LEFT_PELVIS"));
+
+                                    //Log.d("DBGLOG",day.toString());
 
                                     dbAdapter.InsertTable3Data(day);
 
@@ -213,27 +220,29 @@ public class fragment_report_dayChart extends Fragment {
                             pieChart3_dataSet();
 
                             barChart_dataSet();
-                            dbAdapter.close();
+                            dbAdapter.dbclose();
 
                         }
                     },
                     new Response.ErrorListener(){
                         @Override
                         public void onErrorResponse(VolleyError error){
-                            Log.d("DBGLOG","error to get videoJsonArray");
+                            Log.d("DBGLOG","error to get chartJsonArray: "+error);
                         }
                     }
-            ){
-                @Override
-                protected Map<String, String> getParams() {   // send parameters here
-
-                    Map<String, String> params = new HashMap<>();
-                    params.put("user_id", user_id);
-                    params.put("date",getToday);
-
-                    return params;
-                }
-            };
+            )
+//            {
+//                @Override
+//                protected Map<String, String> getParams() {   // send parameters here
+//
+//                    Map<String, String> params = new HashMap<>();
+//                    params.put("user_id", user_id);
+//                    params.put("date",getToday);
+//
+//                    return params;
+//                }
+//            }
+            ;
             jsonArrayRequest.setShouldCache(false);
             requestQueue.add(jsonArrayRequest);
         }
@@ -245,7 +254,7 @@ public class fragment_report_dayChart extends Fragment {
         int status = NetworkStatus.getConnectivityStatus(getContext());
         if(status==NetworkStatus.TYPE_MOBILE || status==NetworkStatus.TYPE_WIFI) {
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                    Request.Method.POST,
+                    Request.Method.GET,
                     getDayChart_url,
                     null,
                     new Response.Listener<JSONArray>() {
@@ -253,7 +262,6 @@ public class fragment_report_dayChart extends Fragment {
                         public void onResponse(JSONArray response) {
 
                             if(response!=null) { //서버에 이전날짜 정보 있는 경우
-
                                 // Process the JSON
                                 try {
                                     DayChart day = new DayChart();
@@ -261,9 +269,9 @@ public class fragment_report_dayChart extends Fragment {
                                     for (int i = 0; i < response.length(); i++) {
                                         JSONObject chartInfo = response.getJSONObject(i);
 
-                                        day.setDate(chartInfo.getString("date"));
-                                        day.setTotal_sitting_time(chartInfo.getInt("total"));
-                                        day.setCorrect_sitting_time(chartInfo.getInt("correct"));
+                                        day.setDate(chartInfo.getString("DATE"));
+                                        day.setTotal_sitting_time(chartInfo.getInt("TOTAL_SITTING"));
+                                        day.setCorrect_sitting_time(chartInfo.getInt("CORRECT_SITTING"));
                                         day.setK0(chartInfo.getInt("k0"));
                                         day.setK1(chartInfo.getInt("k1"));
                                         day.setK2(chartInfo.getInt("k2"));
@@ -271,8 +279,10 @@ public class fragment_report_dayChart extends Fragment {
                                         day.setK4(chartInfo.getInt("k4"));
                                         day.setK5(chartInfo.getInt("k5"));
                                         day.setK6(chartInfo.getInt("k6"));
-                                        day.setCorrect_pelvis(chartInfo.getInt("correct_pelvis"));
-                                        day.setLeft_pelvis(chartInfo.getInt("left_pelvis"));
+                                        day.setCorrect_pelvis(chartInfo.getInt("CORRECT_PELVIS"));
+                                        day.setLeft_pelvis(chartInfo.getInt("LEFT_PELVIS"));
+
+                                        //Log.d("DBGLOG",day.toString());
 
                                         dbAdapter.InsertTable3Data(day);
                                     }
@@ -280,7 +290,7 @@ public class fragment_report_dayChart extends Fragment {
                                     e.printStackTrace();
                                 }
 
-                                dbAdapter.close();
+                                dbAdapter.dbclose();
                                 dayBefore.setEnabled(true);
 
                             }else{ //서버에도 이전날짜 정보 없는 경우
@@ -291,58 +301,66 @@ public class fragment_report_dayChart extends Fragment {
                     new Response.ErrorListener(){
                         @Override
                         public void onErrorResponse(VolleyError error){
-                            Log.d("DBGLOG","error to get videoJsonArray");
+                            Log.d("DBGLOG","error to get chartJsonArray");
                         }
                     }
-            ){
-                @Override
-                protected Map<String, String> getParams() {   // send parameters here
-
-                    Map<String, String> params = new HashMap<>();
-                    params.put("user_id", user_id);
-                    params.put("date",sendDate);
-
-                    return params;
-                }
-            };
+            )
+//            {
+//                @Override
+//                protected Map<String, String> getParams() {   // send parameters here
+//
+//                    Map<String, String> params = new HashMap<>();
+//                    params.put("user_id", user_id);
+//                    params.put("date",sendDate);
+//
+//                    return params;
+//                }
+//            }
+            ;
             jsonArrayRequest.setShouldCache(false);
             requestQueue.add(jsonArrayRequest);
         }
     }
 
 
+
     public void chartValue_Setting(String date){
+        int total=0;
         if(dbAdapter==null)
             dbAdapter.open();
+        else
+            dbAdapter.dbopen();
+
         Cursor cursor = dbAdapter.fetchAllTable3data(date);
 
-        if(cursor!=null)
-            cursor.moveToFirst();
-
-        int total = cursor.getInt(cursor.getColumnIndex(DayChart.TOTAL_SITTING));
-        int hour = total/60; int min = total%60;
-        review.setText("Total Sitting time: "+hour+" h "+min+" m");
+        if(cursor!=null && cursor.moveToFirst()) {
+            total = cursor.getInt(cursor.getColumnIndex(DayChart.TOTAL_SITTING));
 
 
-        right_ratio=cursor.getInt(cursor.getColumnIndex(DayChart.CORRECT_SITTING));
-        wrong_ratio=100f-right_ratio;
+            int hour = total / 60;
+            int min = total % 60;
+            review.setText("Total Sitting time: " + hour + " h " + min + " m");
 
-        Straight_ratio=cursor.getInt(cursor.getColumnIndex(DayChart.CORRECT_PELVIS));
-        Distorted_ratio=100f-Straight_ratio;
 
-        Left_ratio=cursor.getInt(cursor.getColumnIndex(DayChart.LEFT_PELVIS));
-        Right_ratio=100f-Left_ratio;
+            right_ratio = cursor.getInt(cursor.getColumnIndex(DayChart.CORRECT_SITTING));
+            wrong_ratio = 100f - right_ratio;
 
-        Turtle=cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD0));
-        Slouched=cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD1));
-        PelvisImbalance=cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD2));
-        Scoliosis=cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD3));
-        HipPain=cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD4));
-        KneePain=cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD5));
-        PoorCirculation=cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD6));
+            Straight_ratio = cursor.getInt(cursor.getColumnIndex(DayChart.CORRECT_PELVIS));
+            Distorted_ratio = 100f - Straight_ratio;
 
-        dbAdapter.close();
+            Left_ratio = cursor.getInt(cursor.getColumnIndex(DayChart.LEFT_PELVIS));
+            Right_ratio = 100f - Left_ratio;
 
+            Turtle = cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD0));
+            Slouched = cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD1));
+            PelvisImbalance = cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD2));
+            Scoliosis = cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD3));
+            HipPain = cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD4));
+            KneePain = cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD5));
+            PoorCirculation = cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD6));
+
+            dbAdapter.dbclose();
+        }
         pieChart_dataSet();
         pieChart2_dataSet();
         pieChart3_dataSet();
@@ -350,18 +368,36 @@ public class fragment_report_dayChart extends Fragment {
         barChart_dataSet();
     }
 
-    public void isChartInfo(String date,int flag){
+    public void isChartInfo(String date,int flag){ //기록 있는지 여부 구분 못함 => 수정해야
         if(dbAdapter==null)
             dbAdapter.open();
+        else
+            dbAdapter.dbopen();
+
         Cursor cursor = dbAdapter.fetchAllTable3data(date);
 
+        if (cursor != null)
+            cursor.moveToFirst();
+
         if(cursor!=null) { //안드로이드 db에 기록 있는 경우
+            Log.d("DBGLOG","RECORD O");
             if(flag==1){
                 dayAfter.setEnabled(true);
+                try {
+                    day.setText(simpleDateFormat2.format(simpleDateFormat.parse(date)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }else if(flag==-1){
                 dayBefore.setEnabled(true);
+                try {
+                    day.setText(simpleDateFormat2.format(simpleDateFormat.parse(date)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         } else{ //기록 없는 경우
+            Log.d("DBGLOG","RECORD X");
             if(flag==1){
                 dayAfter.setEnabled(false);
             }else if(flag==-1){
@@ -381,7 +417,7 @@ public class fragment_report_dayChart extends Fragment {
             }});
         AlertDialog alert = dialogBuilder.create();
         alert.show();
-        alert.getWindow().setLayout(850,900);
+        alert.getWindow().setLayout(950,1100);
     }
 
     public void barChart_dataSet(){
