@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="4th Week March 2019"
+            android:text="3rd Week May 2019"
             android:textSize="20dp"
             android:textColor="#000000"/>
         <!--android:text="2019년 3월 4주차"-->
@@ -57,6 +57,26 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_width="300dp"
                 android:layout_height="300dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <Button
+                    android:id="@+id/info"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="50dp"
+                    android:background="@drawable/question"
+                    android:gravity="center_vertical" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

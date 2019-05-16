@@ -31,12 +31,13 @@
     </string-array>
 
     <string-array name="posture_alarm">
-        <item>You are sitting in the right posture :D</item>
+        <item>You are sitting in the right position :)</item>
+        <item>Overall, the body is out of balance.\nPlease stay in the right position!</item>
+        <item>Are you lowering your neck?\nPlease stay in the right position!</item>
         <item>Are your legs crossed?\nPlease stay in the right position!</item>
-        <item>Your body is leaning forward :(\nPlease stay in the right position!</item>
-        <item>It\'s a posture that puts pressure on your back :(\n\u0009\u0009\u0009\u0009\u0009\u0009\u0009\u0009\u0009Please stay in the right position!</item>
-        <item>Are your legs on the chair?\nPlease stay in the right position!</item>
-        <item>Your balance is tilted to one side :(\n Please stay in the right position!</item>
+        <item>Do you have your legs on the chair?\nPlease stay in the right position!</item>
+        <item>Are you keeping your back straight?\nPlease stay in the right position!</item>
+        <item>Please stay in the right position!</item>
     </string-array>
 
 </resources>

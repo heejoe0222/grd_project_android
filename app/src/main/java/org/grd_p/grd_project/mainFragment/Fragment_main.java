@@ -54,6 +54,7 @@ public class Fragment_main extends Fragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_main,container,false);
+        //Log.d("DBGLOG FRAG","MAIN");
         requestQueue = Volley.newRequestQueue(getContext());
 
         user_id = getArguments().getString("user_id");
@@ -69,35 +70,6 @@ public class Fragment_main extends Fragment{
         posture_alarm = getResources().getStringArray(R.array.posture_alarm);
 
         ImageLoaderUtility.getInstance().initImageLoader(getContext());
-        ImageLoader.getInstance().displayImage(img_url, posture, ImageLoaderUtility.getInstance().getProfileImageOptions(), new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String imageUri, View view) {
-                Log.d("DBGLOG","onLoadingStarted");
-            }
-
-            @Override
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                Log.d("DBGLOG","onLoadingFailed :"+failReason);
-                display_time.setText("Fail to load Image :( \nPlease try again..!");
-            }
-
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                Log.d("DBGLOG","onLoadingComplete");
-                // 이미지 받아온 시간 textView에 반영
-                long now = System.currentTimeMillis();
-                Date date = new Date(now);
-                String getTime = simpleDateFormat.format(date);
-
-                display_time.setText("Last update time: "+getTime);
-            }
-
-            @Override
-            public void onLoadingCancelled(String imageUri, View view) {
-                Log.d("DBGLOG","onLoadingCancelled");
-
-            }
-        });
 
         getPosture(posture_url);
 
@@ -108,49 +80,51 @@ public class Fragment_main extends Fragment{
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //image 받아오기
-                ImageLoader.getInstance().displayImage(img_url, posture, ImageLoaderUtility.getInstance().getProfileImageOptions(), new ImageLoadingListener() {
-                    @Override
-                    public void onLoadingStarted(String imageUri, View view) {
-                        Log.d("DBGLOG","onLoadingStarted by Button");
-                    }
-
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                        Log.d("DBGLOG","onLoadingFailed by Button :"+failReason);
-                        display_time.setText("Fail to load Image :( \nPlease try again..!");
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        Log.d("DBGLOG","onLoadingComplete by Button");
-                        // 이미지 받아온 시간 textView에 반영
-                        long now = System.currentTimeMillis();
-                        Date date = new Date(now);
-                        String getTime = simpleDateFormat.format(date);
-
-                        display_time.setText("Last update time: "+getTime);
-                    }
-
-                    @Override
-                    public void onLoadingCancelled(String imageUri, View view) {
-                        Log.d("DBGLOG","onLoadingCancelled");
-                    }
-                });
                 // 실시간 메세지 받아오기
                 StringRequest request = new StringRequest(Request.Method.GET, posture_url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("DBGLOG","success to get posture: "+response);
+                        //Log.d("DBGLOG","success to get posture: "+response);
                         pos = Integer.parseInt(response);
 
                         // 자세 상태 textView 변경
                         alarm_msg.setText(posture_alarm[pos]); //서버에서 받아온 값으로 설정해야
+
+                        //image 받아오기
+                        ImageLoader.getInstance().displayImage(img_url, posture, ImageLoaderUtility.getInstance().getProfileImageOptions(), new ImageLoadingListener() {
+                            @Override
+                            public void onLoadingStarted(String imageUri, View view) {
+                                //Log.d("DBGLOG","onLoadingStarted by Button");
+                            }
+
+                            @Override
+                            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                                Log.d("DBGLOG","onLoadingFailed by Button :"+failReason);
+                                display_time.setText("Fail to load Image :( \nPlease try again..!");
+                            }
+
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                                //Log.d("DBGLOG","onLoadingComplete by Button");
+                                // 이미지 받아온 시간 textView에 반영
+                                long now = System.currentTimeMillis();
+                                Date date = new Date(now);
+                                String getTime = simpleDateFormat.format(date);
+
+                                display_time.setText("Last update time: "+getTime);
+                            }
+
+                            @Override
+                            public void onLoadingCancelled(String imageUri, View view) {
+                                Log.d("DBGLOG","onLoadingCancelled");
+                            }
+                        });
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("DBGLOG","onErrorResponse "+error);
+                        display_time.setText("Fail to load new posture :( \nPlease try again..!");
                     }
                 });
                 request.setShouldCache(false);
@@ -166,16 +140,47 @@ public class Fragment_main extends Fragment{
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("DBGLOG","success to get posture: "+response);
+                //Log.d("DBGLOG","success to get posture: "+response);
                 pos = Integer.parseInt(response);
 
                 // 자세 상태 textView 변경
                 alarm_msg.setText(posture_alarm[pos]); //서버에서 받아온 값으로 설정해야
+
+                ImageLoader.getInstance().displayImage(img_url, posture, ImageLoaderUtility.getInstance().getProfileImageOptions(), new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                        //Log.d("DBGLOG","onLoadingStarted");
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                        Log.d("DBGLOG","onLoadingFailed :"+failReason);
+                        display_time.setText("Fail to load Image :( \nPlease try again..!");
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        //Log.d("DBGLOG","onLoadingComplete");
+                        // 이미지 받아온 시간 textView에 반영
+                        long now = System.currentTimeMillis();
+                        Date date = new Date(now);
+                        String getTime = simpleDateFormat.format(date);
+
+                        display_time.setText("Last update time: "+getTime);
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String imageUri, View view) {
+                        Log.d("DBGLOG","onLoadingCancelled");
+
+                    }
+                });
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("DBGLOG","onErrorResponse "+error);
+                Log.d("DBGLOG","onErrorResponse: "+error);
+                display_time.setText("Fail to load new posture :( \nPlease try again..!");
             }
         });
         request.setShouldCache(false);

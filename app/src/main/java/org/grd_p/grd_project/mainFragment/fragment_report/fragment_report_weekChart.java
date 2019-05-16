@@ -1,5 +1,7 @@
 package org.grd_p.grd_project.mainFragment.fragment_report;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,21 +35,29 @@ import java.util.List;
 public class fragment_report_weekChart extends Fragment {
     PieChart sitting_time,sitting_degree,sitting_direction;
     BarChart sitting_time_part;
-    Button weekBefore, weekAfter;
+    Button weekBefore, weekAfter, info;
 
     float right_ratio, wrong_ratio;
     float Left_ratio, Right_ratio, Straight_ratio,Distorted_ratio;
-    float neck, shoulder, back, spine;
+    float Turtle, Slouched, PelvisImbalance, Scoliosis, HipPain, KneePain, PoorCirculation;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_report_weekchart, container, false);
 
         //DB에서 기존 데이터 불러오는 작업
-        right_ratio=40f;wrong_ratio=60f;
-        Left_ratio=45f; Right_ratio=55f;
-        Straight_ratio=30f; Distorted_ratio=70f;
+        right_ratio=70f;wrong_ratio=30f;
+        Left_ratio=40f; Right_ratio=60f;
+        Straight_ratio=50f; Distorted_ratio=50f;
 
-        neck=5f; shoulder=11f; back=9f; spine=19f;
+        Turtle=15f; Slouched=20f; PelvisImbalance=5f; Scoliosis=10f; HipPain=30f; KneePain=5f; PoorCirculation=15f;
+
+        info = rootView.findViewById(R.id.info);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+            }
+        });
 
         //기존 데이터 있으면 dayBefore.setEnabled(true)
         weekBefore = rootView.findViewById(R.id.weekBefore_button);
@@ -82,22 +92,39 @@ public class fragment_report_weekChart extends Fragment {
         return rootView;
     }
 
+    public void showDialog(){
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext(),R.style.AlertDialog);
+        dialogBuilder.setTitle(" Label Info");
+        dialogBuilder.setIcon(R.drawable.question_small);
+        dialogBuilder.setMessage("\nT: Turtle\nS: Slouched\nP: PelvisImbalance\nS: Scoliosis\nH: HipPain\nK: KneePain\nPC: PoorCirculation");
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dlg, int sumthin) {
+                dlg.dismiss();
+            }});
+        AlertDialog alert = dialogBuilder.create();
+        alert.show();
+        alert.getWindow().setLayout(950,1100);
+    }
+
     public void barChart_dataSet(){
         ArrayList<BarEntry> yValues = new ArrayList();
-        yValues.add(new BarEntry(0,neck));
-        yValues.add(new BarEntry(1,shoulder));
-        yValues.add(new BarEntry(2,back));
-        yValues.add(new BarEntry(3,spine));
+        yValues.add(new BarEntry(0,Turtle));
+        yValues.add(new BarEntry(1,Slouched));
+        yValues.add(new BarEntry(2,PelvisImbalance));
+        yValues.add(new BarEntry(3,Scoliosis));
+        yValues.add(new BarEntry(4,HipPain));
+        yValues.add(new BarEntry(5,KneePain));
+        yValues.add(new BarEntry(6,PoorCirculation));
 
         //weekBarDataSet dataset = new weekBarDataSet(yValues, "잘못 앉은 시간 (단위: 시간)");
-        weekBarDataSet dataset = new weekBarDataSet(yValues, "Wrong Sitting time (unit: hour)");
+        weekBarDataSet dataset = new weekBarDataSet(yValues, "Wrong Sitting time (unit: %)");
         dataset.setValueTextSize(13);
         dataset.setColors(new int[] {R.color.theme1,R.color.theme2,R.color.theme3},getContext());
         ArrayList<BarDataSet> dataSets = new ArrayList<>();
         dataSets.add(dataset);
 
-        //String[] labels={"목","어깨","등","척추/고관절"};
-        final String[] labels={"neck","shoulder","back","spine/hip joint"};
+        //String[] labels={"목","어깨/등","골반","척추","고관절","무릎","혈액순환"} 키워드 7개
+        final String[] labels={"T", "S", "P", "S", "H", "K", "PC"};
 
         XAxis xAxis = sitting_time_part.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -188,7 +215,7 @@ public class fragment_report_weekChart extends Fragment {
 
 //        yValues.add(new PieEntry(Straight_ratio,"바른 골반"));
 //        yValues.add(new PieEntry(Distorted_ratio,"삐뚤어진 골반"));
-        yValues.add(new PieEntry(Straight_ratio,"Right pelvis"));
+        yValues.add(new PieEntry(Straight_ratio,"Correct pelvis"));
         yValues.add(new PieEntry(Distorted_ratio,"Crooked pelvis"));
 
         Description description = new Description();
@@ -264,9 +291,9 @@ class weekBarDataSet extends BarDataSet {
 
     @Override
     public int getColor(int index) {
-        if (getEntryForIndex(index).getY() < 7) //기준 나중에 바꿔야
+        if (getEntryForIndex(index).getY() < 10) //기준 나중에 바꿔야
             return mColors.get(0);
-        else if (getEntryForIndex(index).getY() < 9)
+        else if (getEntryForIndex(index).getY() < 20)
             return mColors.get(1);
         else
             return mColors.get(2);

@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +15,24 @@ import org.grd_p.grd_project.R;
 public class Fragment_report extends Fragment{
     Button dayButton,weekButton,monthButton;
     FrameLayout chartContainer;
+
     fragment_report_dayChart dayFragment;
     fragment_report_weekChart weekFragment;
     fragment_report_monthChart monthFragment;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_report,container,false);
+        //Log.d("DBGLOG FRAG","report");
         String user_id = getArguments().getString("user_id");
 
-        chartContainer = rootView.findViewById(R.id.chart_container);
-        //처음에 바로 보이는 화면은 주별
-        /*
-        weekFragment = new fragment_report_weekChart();
-        getFragmentManager().beginTransaction().replace(chartContainer.getId(),weekFragment).commit();
-        */
+        final Bundle bundle = new Bundle();
+        bundle.putString("user_id", user_id);
 
+        chartContainer = rootView.findViewById(R.id.chart_container);
+
+        /*처음에 보이는 화면 일별*/
         dayFragment = new fragment_report_dayChart();
+        dayFragment.setArguments(bundle);
         getFragmentManager().beginTransaction().replace(chartContainer.getId(),dayFragment).commit();
 
         dayButton = rootView.findViewById(R.id.day_button);
@@ -62,6 +65,7 @@ public class Fragment_report extends Fragment{
                 setPressed_week();
                 if(weekFragment==null){
                     weekFragment = new fragment_report_weekChart();
+                    weekFragment.setArguments(bundle);
                     getFragmentManager().beginTransaction().add(chartContainer.getId(),weekFragment).commit();
                 }
                 if(dayFragment!=null)
@@ -80,6 +84,7 @@ public class Fragment_report extends Fragment{
                 setPressed_month();
                 if(monthFragment==null){
                     monthFragment = new fragment_report_monthChart();
+                    monthFragment.setArguments(bundle);
                     getFragmentManager().beginTransaction().add(chartContainer.getId(),monthFragment).commit();
                 }
                 if(dayFragment!=null)
