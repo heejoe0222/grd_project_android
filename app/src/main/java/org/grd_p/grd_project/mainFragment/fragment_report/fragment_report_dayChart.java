@@ -21,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -65,7 +66,7 @@ public class fragment_report_dayChart extends Fragment {
     DataBaseAdapter dbAdapter;
 
     private String getDayChart_url = "http://101.101.163.32/dayChart/";
-    String user_id;
+    String user_id="1";
 
     float right_ratio, wrong_ratio;
     float Left_ratio, Right_ratio, Straight_ratio,Distorted_ratio;
@@ -73,16 +74,20 @@ public class fragment_report_dayChart extends Fragment {
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
-    long now = System.currentTimeMillis();
-    Date date = new Date(now);
-    String getToday = simpleDateFormat.format(date);
-    String currentDate = getToday;
+
+    String getToday,currentDate;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_report_daychart, container, false);
         requestQueue = Volley.newRequestQueue(getContext());
-        //user_id = getArguments().getString("user_id"); //왜 여기서 에러나는지?
+        user_id = getArguments().getString("user_id");
+
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        getToday = simpleDateFormat.format(date);
+        currentDate = getToday;
 
         review = rootView.findViewById(R.id.review); //total time 표시하는 텍스트 뷰
         day = rootView.findViewById(R.id.day); //날짜 표시하는 텍스트 뷰
@@ -169,87 +174,111 @@ public class fragment_report_dayChart extends Fragment {
         //서버에서 받아옴
         if(status==NetworkStatus.TYPE_MOBILE || status==NetworkStatus.TYPE_WIFI) {
             Log.d("DBGLOG","setDayChartInfo");
-
-            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                    Request.Method.GET,
+            StringRequest request = new StringRequest(
+                    Request.Method.POST,
                     getDayChart_url,
-                    null,
-                    new Response.Listener<JSONArray>() {
+                    new Response.Listener<String>(){
                         @Override
-                        public void onResponse(JSONArray response) {
-
-                            // Process the JSON
-                            try{
-                                DayChart day = new DayChart();
-
-                                if (response.length()==1) //오늘 데이터만 가져오는 경우
-                                    dayBefore.setEnabled(false);
-                                else //오늘 이전 데이터도 가져오는 경우
-                                    dayBefore.setEnabled(true);
-
-                                for(int i=0;i<response.length();i++){
-                                    JSONObject chartInfo = response.getJSONObject(i);
-
-                                    day.setDate(chartInfo.getString("DATE"));
-                                    day.setTotal_sitting_time(chartInfo.getInt("TOTAL_SITTING"));
-                                    day.setCorrect_sitting_time(chartInfo.getInt("CORRECT_SITTING"));
-                                    day.setK0(chartInfo.getInt("k0"));
-                                    day.setK1(chartInfo.getInt("k1"));
-                                    day.setK2(chartInfo.getInt("k2"));
-                                    day.setK3(chartInfo.getInt("k3"));
-                                    day.setK4(chartInfo.getInt("k4"));
-                                    day.setK5(chartInfo.getInt("k5"));
-                                    day.setK6(chartInfo.getInt("k6"));
-                                    day.setCorrect_pelvis(chartInfo.getInt("CORRECT_PELVIS"));
-                                    day.setLeft_pelvis(chartInfo.getInt("LEFT_PELVIS"));
-
-                                    //Log.d("DBGLOG",day.toString());
-
-                                    dbAdapter.InsertTable3Data(day);
-
-                                }
-                            }catch (JSONException e){
-                                e.printStackTrace();
-                            }
-
-                            chartValue_Setting(getToday);
-                            pieChart_Setting();
-
-                            pieChart_dataSet();
-                            pieChart2_dataSet();
-                            pieChart3_dataSet();
-
-                            barChart_dataSet();
-                            dbAdapter.dbclose();
-
+                        //응답 성공적으로 받았을 때
+                        public void onResponse(String response) {
+                            Log.d("DBGLOG","success to send date");
+                            if (response.equals("success"))
+                                init_chartDataFromServer();
                         }
-                    },
+                        },
                     new Response.ErrorListener(){
                         @Override
-                        public void onErrorResponse(VolleyError error){
-                            Log.d("DBGLOG","error to get chartJsonArray: "+error);
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("DBGLOG","onErrorResponse in SetDayChart:"+error);
                         }
                     }
-            )
-//            {
-//                @Override
-//                protected Map<String, String> getParams() {   // send parameters here
-//
-//                    Map<String, String> params = new HashMap<>();
-//                    params.put("user_id", user_id);
-//                    params.put("date",getToday);
-//
-//                    return params;
-//                }
-//            }
-            ;
-            jsonArrayRequest.setShouldCache(false);
-            requestQueue.add(jsonArrayRequest);
+            ){
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String,String> params = new HashMap<>();
+                    Log.d("DBGLOG","return params: "+user_id+","+getToday);
+                    params.put("user_id",user_id);
+                    params.put("sendDate",getToday);
+                    return params;
+                }
+            };
+            request.setShouldCache(false);
+            requestQueue.add(request);
+
         }
 
     }
-    public void getChartDataFromServer(String date){ //date:가져올 기준 날짜
-        final String sendDate = date;
+
+    public void init_chartDataFromServer(){
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                getDayChart_url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        // Process the JSON
+                        try{
+                            DayChart day = new DayChart();
+                            Log.d("DBGLOG","response length: "+response.length());
+
+                            if (response.length()==1) //오늘 데이터만 가져오는 경우
+                                dayBefore.setEnabled(false);
+                            else //오늘 이전 데이터도 가져오는 경우
+                                dayBefore.setEnabled(true);
+
+                            for(int i=0;i<response.length();i++){
+                                JSONObject chartInfo = response.getJSONObject(i);
+
+                                day.setDate(chartInfo.getString("DATE"));
+                                day.setTotal_sitting_time(chartInfo.getInt("TOTAL_SITTING"));
+                                day.setCorrect_sitting_time(chartInfo.getInt("CORRECT_SITTING"));
+                                day.setK0(chartInfo.getInt("k0"));
+                                day.setK1(chartInfo.getInt("k1"));
+                                day.setK2(chartInfo.getInt("k2"));
+                                day.setK3(chartInfo.getInt("k3"));
+                                day.setK4(chartInfo.getInt("k4"));
+                                day.setK5(chartInfo.getInt("k5"));
+                                day.setK6(chartInfo.getInt("k6"));
+                                day.setCorrect_pelvis(chartInfo.getInt("CORRECT_PELVIS"));
+                                day.setLeft_pelvis(chartInfo.getInt("LEFT_PELVIS"));
+
+                                Log.d("DBGLOG",day.toString());
+
+                                dbAdapter.InsertTable3Data(day);
+
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+
+                        //chartValue_Setting(getToday);
+                        chartValue_Setting("2019-05-14");
+                        pieChart_Setting();
+
+                        pieChart_dataSet();
+                        pieChart2_dataSet();
+                        pieChart3_dataSet();
+
+                        barChart_dataSet();
+                        dbAdapter.dbclose();
+
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Log.d("DBGLOG","error in init_chartDataFromServer: "+error);
+                    }
+                }
+        );
+        jsonArrayRequest.setShouldCache(false);
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    public void getChartDataFromServer(){ //date:가져올 기준 날짜
+        dbAdapter.dbopen();
         //서버에서 받아옴
         int status = NetworkStatus.getConnectivityStatus(getContext());
         if(status==NetworkStatus.TYPE_MOBILE || status==NetworkStatus.TYPE_WIFI) {
@@ -265,6 +294,7 @@ public class fragment_report_dayChart extends Fragment {
                                 // Process the JSON
                                 try {
                                     DayChart day = new DayChart();
+                                    Log.d("DBGLOG","response length: "+response.length());
 
                                     for (int i = 0; i < response.length(); i++) {
                                         JSONObject chartInfo = response.getJSONObject(i);
@@ -301,22 +331,10 @@ public class fragment_report_dayChart extends Fragment {
                     new Response.ErrorListener(){
                         @Override
                         public void onErrorResponse(VolleyError error){
-                            Log.d("DBGLOG","error to get chartJsonArray");
+                            Log.d("DBGLOG","error in getChartDataFromServer"+error);
                         }
                     }
-            )
-//            {
-//                @Override
-//                protected Map<String, String> getParams() {   // send parameters here
-//
-//                    Map<String, String> params = new HashMap<>();
-//                    params.put("user_id", user_id);
-//                    params.put("date",sendDate);
-//
-//                    return params;
-//                }
-//            }
-            ;
+            );
             jsonArrayRequest.setShouldCache(false);
             requestQueue.add(jsonArrayRequest);
         }
@@ -331,7 +349,7 @@ public class fragment_report_dayChart extends Fragment {
         else
             dbAdapter.dbopen();
 
-        Cursor cursor = dbAdapter.fetchAllTable3data(date);
+        Cursor cursor = dbAdapter.fetchSomeTable3data(date); //해당 date에 해당하는 정보들 불러옴
 
         if(cursor!=null && cursor.moveToFirst()) {
             total = cursor.getInt(cursor.getColumnIndex(DayChart.TOTAL_SITTING));
@@ -359,6 +377,7 @@ public class fragment_report_dayChart extends Fragment {
             KneePain = cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD5));
             PoorCirculation = cursor.getInt(cursor.getColumnIndex(DayChart.KEYWORD6));
 
+            cursor.close();
             dbAdapter.dbclose();
         }
         pieChart_dataSet();
@@ -368,27 +387,31 @@ public class fragment_report_dayChart extends Fragment {
         barChart_dataSet();
     }
 
-    public void isChartInfo(String date,int flag){ //기록 있는지 여부 구분 못함 => 수정해야
+    public void isChartInfo(String date, int flag){ //기록 있는지 여부 구분 못함 => 수정해야
         if(dbAdapter==null)
             dbAdapter.open();
         else
             dbAdapter.dbopen();
 
-        Cursor cursor = dbAdapter.fetchAllTable3data(date);
 
-        if (cursor != null)
-            cursor.moveToFirst();
+        Log.d("DBGLOG","Date: "+date);
+        Cursor cursor = dbAdapter.fetchSomeTable3data(date);
 
-        if(cursor!=null) { //안드로이드 db에 기록 있는 경우
+        //if (cursor != null)
+        //    cursor.moveToFirst();
+        final String sendDate = "date";
+
+        if(cursor!=null && cursor.moveToFirst()) { //안드로이드 db에 기록 있는 경우
             Log.d("DBGLOG","RECORD O");
-            if(flag==1){
+            cursor.close();
+            if(flag==1){ //다음 날짜일 경우
                 dayAfter.setEnabled(true);
                 try {
                     day.setText(simpleDateFormat2.format(simpleDateFormat.parse(date)));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-            }else if(flag==-1){
+            }else if(flag==-1){ //이전 날짜일 경우
                 dayBefore.setEnabled(true);
                 try {
                     day.setText(simpleDateFormat2.format(simpleDateFormat.parse(date)));
@@ -398,10 +421,40 @@ public class fragment_report_dayChart extends Fragment {
             }
         } else{ //기록 없는 경우
             Log.d("DBGLOG","RECORD X");
+            cursor.close();
             if(flag==1){
                 dayAfter.setEnabled(false);
             }else if(flag==-1){
-                getChartDataFromServer(date); //이전날짜 정보 서버에서 받아옴
+                StringRequest request = new StringRequest(
+                        Request.Method.POST,
+                        getDayChart_url,
+                        new Response.Listener<String>(){
+                            @Override
+                            //응답 성공적으로 받았을 때
+                            public void onResponse(String response) {
+                                Log.d("DBGLOG","success to send date");
+                                if (response.equals("success"))
+                                    getChartDataFromServer(); //이전날짜 정보 서버에서 받아옴
+                            }
+                        },
+                        new Response.ErrorListener(){
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("DBGLOG","onErrorResponse in SetDayChart:"+error);
+                            }
+                        }
+                ){
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String,String> params = new HashMap<>();
+                        params.put("user_id",user_id);
+                        params.put("sendDate",sendDate);
+                        Log.d("DBGLOG","return params: "+user_id+","+getToday);
+                        return params;
+                    }
+                };
+                request.setShouldCache(false);
+                requestQueue.add(request);
             }
         }
     }

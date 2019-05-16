@@ -25,6 +25,9 @@ public class Fragment_report extends Fragment{
         Log.d("DBGLOG FRAG","report");
         String user_id = getArguments().getString("user_id");
 
+        final Bundle bundle = new Bundle();
+        bundle.putString("user_id", user_id);
+
         chartContainer = rootView.findViewById(R.id.chart_container);
         //처음에 바로 보이는 화면은 주별
         /*
@@ -33,6 +36,7 @@ public class Fragment_report extends Fragment{
         */
 
         dayFragment = new fragment_report_dayChart();
+        dayFragment.setArguments(bundle);
         getFragmentManager().beginTransaction().replace(chartContainer.getId(),dayFragment).commit();
 
         dayButton = rootView.findViewById(R.id.day_button);
@@ -65,6 +69,7 @@ public class Fragment_report extends Fragment{
                 setPressed_week();
                 if(weekFragment==null){
                     weekFragment = new fragment_report_weekChart();
+                    weekFragment.setArguments(bundle);
                     getFragmentManager().beginTransaction().add(chartContainer.getId(),weekFragment).commit();
                 }
                 if(dayFragment!=null)
@@ -83,6 +88,7 @@ public class Fragment_report extends Fragment{
                 setPressed_month();
                 if(monthFragment==null){
                     monthFragment = new fragment_report_monthChart();
+                    monthFragment.setArguments(bundle);
                     getFragmentManager().beginTransaction().add(chartContainer.getId(),monthFragment).commit();
                 }
                 if(dayFragment!=null)

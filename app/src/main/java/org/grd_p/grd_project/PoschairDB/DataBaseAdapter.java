@@ -33,7 +33,7 @@ public class DataBaseAdapter {
         database= dbHelper.getWritableDatabase();
     }
 
-    public Cursor fetchAllTable3data(String date) {
+    public Cursor fetchSomeTable3data(String date) {
         return database.query(DayChart.TABLE_NAME,
                 new String[] { DayChart.DATE,DayChart.TOTAL_SITTING,DayChart.CORRECT_SITTING,
                         DayChart.KEYWORD0,DayChart.KEYWORD1,DayChart.KEYWORD2,DayChart.KEYWORD3,
