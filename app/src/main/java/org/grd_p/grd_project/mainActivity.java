@@ -16,6 +16,7 @@ import org.grd_p.grd_project.Firebase.Constants;
 
 public class mainActivity extends AppCompatActivity {
     PagerAdapter adapter;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class mainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String user_id = intent.getExtras().getString("user_id");
 
-        final TabLayout tabLayout = findViewById(R.id.tabLayout);
+        tabLayout = findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
@@ -90,12 +91,19 @@ public class mainActivity extends AppCompatActivity {
 
             mNotificationManager.createNotificationChannel(mChannel);
         }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(!(adapter==null))
+
+        if(!(adapter==null)) {
             adapter.notifyDataSetChanged();
+            tabLayout.getTabAt(0).setIcon(R.drawable.user_b);
+            tabLayout.getTabAt(1).setIcon(R.drawable.analytics);
+            tabLayout.getTabAt(2).setIcon(R.drawable.video);
+            tabLayout.getTabAt(3).setIcon(R.drawable.settings);
+        }
     }
 }

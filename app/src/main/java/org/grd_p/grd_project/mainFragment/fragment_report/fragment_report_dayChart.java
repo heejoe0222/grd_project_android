@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -46,7 +45,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -173,7 +171,6 @@ public class fragment_report_dayChart extends Fragment {
 
         //서버에서 받아옴
         if(status==NetworkStatus.TYPE_MOBILE || status==NetworkStatus.TYPE_WIFI) {
-            Log.d("DBGLOG","setDayChartInfo");
             StringRequest request = new StringRequest(
                     Request.Method.POST,
                     getDayChart_url,
@@ -181,7 +178,6 @@ public class fragment_report_dayChart extends Fragment {
                         @Override
                         //응답 성공적으로 받았을 때
                         public void onResponse(String response) {
-                            Log.d("DBGLOG","success to send date");
                             if (response.equals("success"))
                                 init_chartDataFromServer();
                         }
@@ -196,7 +192,7 @@ public class fragment_report_dayChart extends Fragment {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String,String> params = new HashMap<>();
-                    Log.d("DBGLOG","return params: "+user_id+","+getToday);
+                    //Log.d("DBGLOG","return params: "+user_id+","+getToday);
                     params.put("user_id",user_id);
                     params.put("sendDate",getToday);
                     return params;
@@ -221,7 +217,7 @@ public class fragment_report_dayChart extends Fragment {
                         // Process the JSON
                         try{
                             DayChart day = new DayChart();
-                            Log.d("DBGLOG","response length: "+response.length());
+                            //Log.d("DBGLOG","response length: "+response.length());
 
                             if (response.length()==1) //오늘 데이터만 가져오는 경우
                                 dayBefore.setEnabled(false);
@@ -244,7 +240,7 @@ public class fragment_report_dayChart extends Fragment {
                                 day.setCorrect_pelvis(chartInfo.getInt("CORRECT_PELVIS"));
                                 day.setLeft_pelvis(chartInfo.getInt("LEFT_PELVIS"));
 
-                                Log.d("DBGLOG",day.toString());
+                                //Log.d("DBGLOG",day.toString());
 
                                 dbAdapter.InsertTable3Data(day);
 
@@ -294,7 +290,7 @@ public class fragment_report_dayChart extends Fragment {
 
                                 try {
                                     DayChart day = new DayChart();
-                                    Log.d("DBGLOG","response length: "+response.length());
+                                    //Log.d("DBGLOG","response length: "+response.length());
 
                                     for (int i = 0; i < response.length(); i++) {
                                         JSONObject chartInfo = response.getJSONObject(i);
@@ -388,40 +384,25 @@ public class fragment_report_dayChart extends Fragment {
     }
 
     public void isChartInfo(String date, int flag){
-
         if(dbAdapter==null)
             dbAdapter.open();
         else
             dbAdapter.dbopen();
 
 
-        Log.d("DBGLOG","Date: "+date);
         Cursor cursor = dbAdapter.fetchSomeTable3data(date);
-
-        //if (cursor != null)
-        //    cursor.moveToFirst();
         final String sendDate = date;
 
         if(cursor!=null && cursor.moveToFirst()) { //안드로이드 db에 기록 있는 경우
-            Log.d("DBGLOG","RECORD O");
+            //Log.d("DBGLOG","RECORD O");
             cursor.close();
             if(flag==1){ //다음 날짜일 경우
                 dayAfter.setEnabled(true);
-//                try {
-//                    day.setText(simpleDateFormat2.format(simpleDateFormat.parse(date)));
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
             }else if(flag==-1){ //이전 날짜일 경우
                 dayBefore.setEnabled(true);
-//                try {
-//                    day.setText(simpleDateFormat2.format(simpleDateFormat.parse(date)));
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
             }
         } else{ //기록 없는 경우
-            Log.d("DBGLOG","RECORD X");
+            //Log.d("DBGLOG","RECORD X");
             cursor.close();
             if(flag==1){
                 dayAfter.setEnabled(false);
@@ -433,7 +414,7 @@ public class fragment_report_dayChart extends Fragment {
                             @Override
                             //응답 성공적으로 받았을 때
                             public void onResponse(String response) {
-                                Log.d("DBGLOG","success to send date");
+                                //Log.d("DBGLOG","success to send date");
                                 if (response.equals("success"))
                                     getChartDataFromServer(); //이전날짜 정보 서버에서 받아옴
                             }
@@ -450,7 +431,7 @@ public class fragment_report_dayChart extends Fragment {
                         Map<String,String> params = new HashMap<>();
                         params.put("user_id",user_id);
                         params.put("sendDate",sendDate);
-                        Log.d("DBGLOG","return params: "+user_id+","+sendDate);
+                        //Log.d("DBGLOG","return params: "+user_id+","+sendDate);
                         return params;
                     }
                 };

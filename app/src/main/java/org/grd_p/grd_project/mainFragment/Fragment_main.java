@@ -54,7 +54,7 @@ public class Fragment_main extends Fragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_main,container,false);
-        Log.d("DBGLOG FRAG","MAIN");
+        //Log.d("DBGLOG FRAG","MAIN");
         requestQueue = Volley.newRequestQueue(getContext());
 
         user_id = getArguments().getString("user_id");
@@ -84,7 +84,7 @@ public class Fragment_main extends Fragment{
                 StringRequest request = new StringRequest(Request.Method.GET, posture_url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("DBGLOG","success to get posture: "+response);
+                        //Log.d("DBGLOG","success to get posture: "+response);
                         pos = Integer.parseInt(response);
 
                         // 자세 상태 textView 변경
@@ -94,7 +94,7 @@ public class Fragment_main extends Fragment{
                         ImageLoader.getInstance().displayImage(img_url, posture, ImageLoaderUtility.getInstance().getProfileImageOptions(), new ImageLoadingListener() {
                             @Override
                             public void onLoadingStarted(String imageUri, View view) {
-                                Log.d("DBGLOG","onLoadingStarted by Button");
+                                //Log.d("DBGLOG","onLoadingStarted by Button");
                             }
 
                             @Override
@@ -105,7 +105,7 @@ public class Fragment_main extends Fragment{
 
                             @Override
                             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                                Log.d("DBGLOG","onLoadingComplete by Button");
+                                //Log.d("DBGLOG","onLoadingComplete by Button");
                                 // 이미지 받아온 시간 textView에 반영
                                 long now = System.currentTimeMillis();
                                 Date date = new Date(now);
@@ -140,7 +140,7 @@ public class Fragment_main extends Fragment{
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("DBGLOG","success to get posture: "+response);
+                //Log.d("DBGLOG","success to get posture: "+response);
                 pos = Integer.parseInt(response);
 
                 // 자세 상태 textView 변경
@@ -149,7 +149,7 @@ public class Fragment_main extends Fragment{
                 ImageLoader.getInstance().displayImage(img_url, posture, ImageLoaderUtility.getInstance().getProfileImageOptions(), new ImageLoadingListener() {
                     @Override
                     public void onLoadingStarted(String imageUri, View view) {
-                        Log.d("DBGLOG","onLoadingStarted");
+                        //Log.d("DBGLOG","onLoadingStarted");
                     }
 
                     @Override
@@ -160,7 +160,7 @@ public class Fragment_main extends Fragment{
 
                     @Override
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        Log.d("DBGLOG","onLoadingComplete");
+                        //Log.d("DBGLOG","onLoadingComplete");
                         // 이미지 받아온 시간 textView에 반영
                         long now = System.currentTimeMillis();
                         Date date = new Date(now);

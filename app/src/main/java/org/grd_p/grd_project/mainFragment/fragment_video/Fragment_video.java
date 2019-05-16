@@ -79,7 +79,7 @@ public class Fragment_video extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_video,container,false);
-        Log.d("DBGLOG FRAG","video");
+        //Log.d("DBGLOG FRAG","video");
 
         user_id = getArguments().getString("user_id");
         requestQueue = Volley.newRequestQueue(getContext());
@@ -148,8 +148,8 @@ public class Fragment_video extends Fragment {
                                     String str_viewNum = viewNum+" views";
                                     String postedTime = video.getString("uploadDate");
                                     int videoLike = video.getInt("liked");
-                                    Log.d("DBGLOG","vidID: "+videoID+", title: "+title+", str_viewNum: "+str_viewNum);
-                                    Log.d("DBGLOG","postedTime: "+postedTime+", videoLike: "+videoLike);
+                                    //Log.d("DBGLOG","vidID: "+videoID+", title: "+title+", str_viewNum: "+str_viewNum);
+                                    //Log.d("DBGLOG","postedTime: "+postedTime+", videoLike: "+videoLike);
 
                                     video_id_array.add(videoID);
                                     video_title_array.add(title);
@@ -176,8 +176,6 @@ public class Fragment_video extends Fragment {
 
                             setVideoInitialize();
 
-                            Log.d("DBGLOG","finish conneciton");
-
                             populateRecyclerView();
                             setUpdateTimefromServer();
 
@@ -200,7 +198,7 @@ public class Fragment_video extends Fragment {
                     new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
-                            Log.d("DBGLOG","likevideo response: "+response);
+                            //Log.d("DBGLOG","likevideo response: "+response);
                             if (response!=null) {
                                 // Process the JSON
                                 try{
@@ -256,7 +254,7 @@ public class Fragment_video extends Fragment {
 
         }else{ //기기장치에서 받아옴 (내부 DB)
 
-            Log.d("DBGLOG","not connected with internet");
+            //Log.d("DBGLOG","not connected with internet");
 
             if(db!=null){
                 //videoID, title, viewNum, postedTime, videoLike
@@ -277,7 +275,7 @@ public class Fragment_video extends Fragment {
                 cursor = db.rawQuery(sql,null);
                 cursor.moveToFirst();
                 int count = cursor.getInt(0);
-                Log.d("DBGLOG","inner db num of likeVideo count: "+Integer.toString(count));
+                //Log.d("DBGLOG","inner db num of likeVideo count: "+Integer.toString(count));
 
                 sql = "select videoID, title, viewNum, postedTime, videoLike from likeVideo order by viewNum desc";
                 cursor = db.rawQuery(sql,null);
@@ -333,7 +331,7 @@ public class Fragment_video extends Fragment {
                 Cursor cursor = db.rawQuery(sql,null);
                 cursor.moveToFirst();
                 int count = cursor.getInt(0);
-                Log.d("DBGLOG","inner db insert success! count: "+count);
+                //Log.d("DBGLOG","inner db insert success! count: "+count);
                 db.close();
             }
         }
@@ -358,7 +356,7 @@ public class Fragment_video extends Fragment {
                     @Override
                     //응답 성공적으로 받았을 때
                     public void onResponse(String response) {
-                        Log.d("DBGLOG","success to update server data");
+                        //Log.d("DBGLOG","success to update server data");
                     }
                 },
                 new Response.ErrorListener(){
@@ -390,7 +388,7 @@ public class Fragment_video extends Fragment {
         if(db!=null){
             Object[] params = {videoID,title,viewNum,postedTime,1};
             dbAdapter.InsertTable2Data(params);
-            Log.d("DBGLOG","success to insert favorite video data");
+            //Log.d("DBGLOG","success to insert favorite video data");
 
             db.execSQL("UPDATE video SET videoLike=1 WHERE videoID='"+videoID+"'");
             db.close();
@@ -468,7 +466,7 @@ public class Fragment_video extends Fragment {
         if(youtubeVideoModel.isLiked()==1){
             likeButton.setBackgroundResource(R.drawable.heart);
             //좋아요한 비디오 영상 리스트에서 해당 비디오 삭제되도록
-            Log.d("DBGLOG","adapter_remove: "+youtubeVideoModel.getVideoID());
+            //Log.d("DBGLOG","adapter_remove: "+youtubeVideoModel.getVideoID());
             videoLikeAdapter.removeVideo(youtubeVideoModel.getVideoID());
             videoLikeAdapter.notifyDataSetChanged();
             checkIsFavoriteVideo(); //비디오 존재하는지 체크 -> 없으면 textvivew 띄움
@@ -481,7 +479,7 @@ public class Fragment_video extends Fragment {
         }else{
             //좋아요한 비디오 영상 리스트에 해당 비디오 추가되도록
             likeButton.setBackgroundResource(R.drawable.selected_heart);
-            Log.d("DBGLOG","adapter_add: "+youtubeVideoModel.getVideoID()+", "+youtubeVideoModel.getTitle());
+            //Log.d("DBGLOG","adapter_add: "+youtubeVideoModel.getVideoID()+", "+youtubeVideoModel.getTitle());
             videoLikeAdapter.addVideo(youtubeVideoModel);
             videoLikeAdapter.notifyDataSetChanged();
             checkIsFavoriteVideo(); //비디오 존재하는지 체크 -> 없으면 textvivew 띄움
@@ -512,13 +510,13 @@ public class Fragment_video extends Fragment {
 
                 if(index>=0) { //비디오 영상리스트에 좋아요 취소한 영상 있다면
                     //추천 비디오 영상 리스트에서 해당 비디오 좋아요(모양) 취소되도록
-                    Log.d("DBGLOG","videoAdapterIndex: "+index);
+                    //Log.d("DBGLOG","videoAdapterIndex: "+index);
                     Button likeButton = videoView.findViewHolderForAdapterPosition(index).itemView.findViewById(R.id.video_likeButton);
                     likeButton.setBackgroundResource(R.drawable.heart);
                     videoAdapter.setUnliked(index);
 
                     //좋아요한 비디오 영상 리스트에서 해당 비디오 삭제되도록
-                    Log.d("DBGLOG","adapter_remove1: "+youtubeVideoModel.getVideoID());
+                    //Log.d("DBGLOG","adapter_remove1: "+youtubeVideoModel.getVideoID());
                     videoLikeAdapter.removeVideo(youtubeVideoModel.getVideoID());
                     videoLikeAdapter.notifyDataSetChanged();
                     checkIsFavoriteVideo(); //비디오 존재하는지 체크 -> 없으면 textvivew 띄움
@@ -529,7 +527,7 @@ public class Fragment_video extends Fragment {
 
                 }else{
                     //좋아요한 비디오 영상 리스트에서 해당 비디오 삭제되도록
-                    Log.d("DBGLOG","adapter_remove2: "+youtubeVideoModel.getVideoID());
+                    //Log.d("DBGLOG","adapter_remove2: "+youtubeVideoModel.getVideoID());
                     videoLikeAdapter.removeVideo(youtubeVideoModel.getVideoID());
                     videoLikeAdapter.notifyDataSetChanged();
                     checkIsFavoriteVideo(); //비디오 존재하는지 체크 -> 없으면 textvivew 띄움

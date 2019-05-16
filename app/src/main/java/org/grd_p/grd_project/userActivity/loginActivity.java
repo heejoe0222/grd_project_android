@@ -70,7 +70,6 @@ public class loginActivity extends AppCompatActivity {
         });
     }
     public void OnLogin(){
-        //String url = "http://ec2-52-79-250-100.ap-northeast-2.compute.amazonaws.com/login/";
         String url = "http://101.101.163.32/login/";
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -120,7 +119,7 @@ public class loginActivity extends AppCompatActivity {
                 Map<String,String> params = new HashMap<>();
                 params.put("email",emailInput.getText().toString());
                 params.put("pwd",pwInput.getText().toString());
-                Log.d("DBGLOG","return params: "+emailInput.getText().toString());
+                //Log.d("DBGLOG","return params: "+emailInput.getText().toString());
                 return params;
             }
         };
@@ -136,7 +135,7 @@ public class loginActivity extends AppCompatActivity {
     }
 
     public void showSignUpActivity(){
-        Intent intent = new Intent(getApplicationContext(),signupActivity.class);
+        Intent intent = new Intent(getApplicationContext(), signUpActivity.class);
         startActivityForResult(intent,101);
     }
 

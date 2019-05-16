@@ -22,19 +22,15 @@ public class Fragment_report extends Fragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_report,container,false);
-        Log.d("DBGLOG FRAG","report");
+        //Log.d("DBGLOG FRAG","report");
         String user_id = getArguments().getString("user_id");
 
         final Bundle bundle = new Bundle();
         bundle.putString("user_id", user_id);
 
         chartContainer = rootView.findViewById(R.id.chart_container);
-        //처음에 바로 보이는 화면은 주별
-        /*
-        weekFragment = new fragment_report_weekChart();
-        getFragmentManager().beginTransaction().replace(chartContainer.getId(),weekFragment).commit();
-        */
 
+        /*처음에 보이는 화면 일별*/
         dayFragment = new fragment_report_dayChart();
         dayFragment.setArguments(bundle);
         getFragmentManager().beginTransaction().replace(chartContainer.getId(),dayFragment).commit();

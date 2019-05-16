@@ -25,13 +25,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.grd_p.grd_project.R;
-import org.grd_p.grd_project.mainActivity;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class signupActivity extends AppCompatActivity {
+public class signUpActivity extends AppCompatActivity {
     private EditText nameInput;
     private EditText pwInput;
     private EditText cfPwInput;
@@ -152,8 +151,6 @@ public class signupActivity extends AppCompatActivity {
     }
 
     public void SignUp(){
-        Log.d("DBGLOG","SignUp");
-        //String url = "http://ec2-52-79-250-100.ap-northeast-2.compute.amazonaws.com/signup/";
         String url = "http://101.101.163.32/signup/";
         // 이메일 중복확인 내용은 나중에 추가
         StringRequest request = new StringRequest(
@@ -168,7 +165,7 @@ public class signupActivity extends AppCompatActivity {
                         Log.d("DBGLOG","reply: "+reply);
 
                         if(reply.equals("success")) {
-                            new AlertDialog.Builder(signupActivity.this)
+                            new AlertDialog.Builder(signUpActivity.this)
                                     .setTitle("Success to sign up")
                                     .setMessage("회원가입이 완료되었습니다!")
                                     .setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -178,7 +175,7 @@ public class signupActivity extends AppCompatActivity {
                                         }
                                     }).show(); // 팝업창 보여줌
                         }else if(reply.equals("already_existed")){
-                            new AlertDialog.Builder(signupActivity.this)
+                            new AlertDialog.Builder(signUpActivity.this)
                                     .setTitle("Fail to sign up")
                                     .setMessage("이미 존재하는 이메일입니다!\n다시 입력해주세요.")
                                     .setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -188,7 +185,7 @@ public class signupActivity extends AppCompatActivity {
                                         }
                                     }).show(); // 팝업창 보여줌
                         }else{
-                            new AlertDialog.Builder(signupActivity.this)
+                            new AlertDialog.Builder(signUpActivity.this)
                                     .setTitle("Fail to sign up")
                                     .setMessage(reply)
                                     .setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -209,7 +206,6 @@ public class signupActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String,String> params = new HashMap<>();
-                Log.d("DBGLOG","getParams");
                 params.put("name",nameInput.getText().toString());
                 params.put("pwd",pwInput.getText().toString());
                 params.put("serialnumber",serialnumber.getText().toString());
@@ -230,34 +226,34 @@ public class signupActivity extends AppCompatActivity {
     //inputCheck 함수 : 입력되어야 하는 내용이 다 입력됐는지 검사
     public boolean inputCheck(){
         if(nameInput.getText().toString().length()==0){
-            Toast.makeText(signupActivity.this,"이름을 입력하세요!", Toast.LENGTH_LONG).show();
+            Toast.makeText(signUpActivity.this,"이름을 입력하세요!", Toast.LENGTH_LONG).show();
             nameInput.requestFocus();
             return false;
         }
 
         if(pwInput.getText().toString().length()==0){
-            Toast.makeText(signupActivity.this,"비밀번호를 입력하세요!", Toast.LENGTH_LONG).show();
+            Toast.makeText(signUpActivity.this,"비밀번호를 입력하세요!", Toast.LENGTH_LONG).show();
             pwInput.requestFocus();
             return false;
         }
         if(cfPwInput.getText().toString().length()==0){
-            Toast.makeText(signupActivity.this,"비밀번호를 다시 한 번 입력하세요!", Toast.LENGTH_LONG).show();
+            Toast.makeText(signUpActivity.this,"비밀번호를 다시 한 번 입력하세요!", Toast.LENGTH_LONG).show();
             cfPwInput.requestFocus();
             return false;
         }
         if(serialnumber.getText().toString().length()==0){
-            Toast.makeText(signupActivity.this,"시리얼번호를 입력하세요!", Toast.LENGTH_LONG).show();
+            Toast.makeText(signUpActivity.this,"시리얼번호를 입력하세요!", Toast.LENGTH_LONG).show();
             serialnumber.requestFocus();
             return false;
         }
 
         if(emailInput.getText().toString().length()==0){
-            Toast.makeText(signupActivity.this,"메일 주소를 입력하세요!", Toast.LENGTH_LONG).show();
+            Toast.makeText(signUpActivity.this,"메일 주소를 입력하세요!", Toast.LENGTH_LONG).show();
             emailInput.requestFocus();
             return false;
         }
         if(!cfPwInput.getText().toString().equals(pwInput.getText().toString())){
-            Toast.makeText(signupActivity.this,"비밀번호가 일치하지 않습니다!", Toast.LENGTH_LONG).show();
+            Toast.makeText(signUpActivity.this,"비밀번호가 일치하지 않습니다!", Toast.LENGTH_LONG).show();
             cfPwInput.requestFocus();
             return false;
         }
