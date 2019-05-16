@@ -72,10 +72,10 @@ public class fragment_report_dayChart extends Fragment {
     float Left_ratio, Right_ratio, Straight_ratio,Distorted_ratio;
     float Turtle, Slouched, PelvisImbalance, Scoliosis, HipPain, KneePain, PoorCirculation;
 
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd MMMM yyyy", Locale.US);
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd"); //DB용
+    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd MMMM yyyy", Locale.US); //VIEW 용
 
-    String getToday,currentDate;
+    String getToday,currentDate; //currentDate는 DB용 형식
 
 
 
@@ -109,7 +109,7 @@ public class fragment_report_dayChart extends Fragment {
         });
 
 
-        //기존 데이터 있으면 dayBefore.setEnabled(true)
+        //DATE가 하루 간격으로 매일 있다는 가정하에 짠 코드 (DATE에 상관없으려면 INDEX attribute 추가 되어야)
         dayBefore = rootView.findViewById(R.id.dayBefore_button);
         dayBefore.setEnabled(false);
         dayBefore.setOnClickListener(new View.OnClickListener() { //이전 날짜 이동 버튼
@@ -127,7 +127,7 @@ public class fragment_report_dayChart extends Fragment {
 
                 //gui 갱신
                 dayAfter.setEnabled(true);
-                //day.setText(simpleDateFormat2.format(cal.getTime()));
+                day.setText(simpleDateFormat2.format(cal.getTime()));
                 cal.add(Calendar.DATE, -1);
                 isChartInfo(simpleDateFormat.format(cal.getTime()),-1); //이전날짜 정보 있는지 확인
             }
@@ -149,7 +149,7 @@ public class fragment_report_dayChart extends Fragment {
 
                 //gui 갱신
                 dayBefore.setEnabled(true);
-                //day.setText(simpleDateFormat2.format(cal.getTime()));
+                day.setText(simpleDateFormat2.format(cal.getTime()));
                 cal.add(Calendar.DATE, +1);
                 isChartInfo(simpleDateFormat.format(cal.getTime()),1); //다음날짜 정보 있는지 확인
             }
@@ -253,8 +253,7 @@ public class fragment_report_dayChart extends Fragment {
                             e.printStackTrace();
                         }
 
-                        //chartValue_Setting(getToday);
-                        chartValue_Setting("2019-05-14");
+                        chartValue_Setting(getToday);
                         pieChart_Setting();
 
                         pieChart_dataSet();
@@ -290,8 +289,9 @@ public class fragment_report_dayChart extends Fragment {
                         @Override
                         public void onResponse(JSONArray response) {
 
-                            if(response!=null) { //서버에 이전날짜 정보 있는 경우
+                            if(response.length()!=0) { //서버에 이전날짜 정보 있는 경우
                                 // Process the JSON
+
                                 try {
                                     DayChart day = new DayChart();
                                     Log.d("DBGLOG","response length: "+response.length());
@@ -387,7 +387,8 @@ public class fragment_report_dayChart extends Fragment {
         barChart_dataSet();
     }
 
-    public void isChartInfo(String date, int flag){ //기록 있는지 여부 구분 못함 => 수정해야
+    public void isChartInfo(String date, int flag){
+
         if(dbAdapter==null)
             dbAdapter.open();
         else
@@ -399,25 +400,25 @@ public class fragment_report_dayChart extends Fragment {
 
         //if (cursor != null)
         //    cursor.moveToFirst();
-        final String sendDate = "date";
+        final String sendDate = date;
 
         if(cursor!=null && cursor.moveToFirst()) { //안드로이드 db에 기록 있는 경우
             Log.d("DBGLOG","RECORD O");
             cursor.close();
             if(flag==1){ //다음 날짜일 경우
                 dayAfter.setEnabled(true);
-                try {
-                    day.setText(simpleDateFormat2.format(simpleDateFormat.parse(date)));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    day.setText(simpleDateFormat2.format(simpleDateFormat.parse(date)));
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
             }else if(flag==-1){ //이전 날짜일 경우
                 dayBefore.setEnabled(true);
-                try {
-                    day.setText(simpleDateFormat2.format(simpleDateFormat.parse(date)));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    day.setText(simpleDateFormat2.format(simpleDateFormat.parse(date)));
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
             }
         } else{ //기록 없는 경우
             Log.d("DBGLOG","RECORD X");
@@ -449,7 +450,7 @@ public class fragment_report_dayChart extends Fragment {
                         Map<String,String> params = new HashMap<>();
                         params.put("user_id",user_id);
                         params.put("sendDate",sendDate);
-                        Log.d("DBGLOG","return params: "+user_id+","+getToday);
+                        Log.d("DBGLOG","return params: "+user_id+","+sendDate);
                         return params;
                     }
                 };
