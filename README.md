@@ -1,10 +1,13 @@
-# PosChair
+# PosChair App 
 
 > Sitting Posture Correction System using Arduino-based Chair and Deep Learning Model
 
-#### Application module for PosChairsitting posture correction system
+* PosChair Application was made for PosChair which is sitting posture correction system
+* Used Android OS and SQLite DB
+* PosChair Server? [Click me](https://github.com/heejoe0222/poschair_server)
 
-## Android UI
+
+## App UI
 
 
 1. User Layout
